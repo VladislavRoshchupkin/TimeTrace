@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% block content %}
+
+
+    <div class="container">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                {{ form.date_work }}
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+
+            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                {{ form.time_work }}
+                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+
+            <script>
+                $(function () {
+                    $("#datetimepicker1").datetimepicker({
+                        format: 'DD.MM.YYYY',
+                    });
+                    $("#datetimepicker2").datetimepicker({
+                        format: 'HH:mm',
+                    });
+                });
+            </script>
+            <button type="submit">Добавить</button>
+        </form>
+    </div>
+
+    {% endblock content %}
+
+</body>
+
+</html>

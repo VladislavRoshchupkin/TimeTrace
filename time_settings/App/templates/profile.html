@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Профиль{% endblock title %}</title>
 </head>
+
 <body>
-    
+
     {% block content %}
     <div class="container">
         привет! {{user.username}}
-
+ 
         <a href="{% url 'logout' %}">Выйти</a>
         <br>
         {% if request.user.is_superuser %}
-            <a href="{% url 'add_employee' %}">Добавить сотрудника</a>
-            <a href="{% url 'add_project' %}">Добавить Проект</a>
+
+        <a class="btn btn-primary" href="{% url 'add_employee' %}" role="button">Добавить сотрудника</a>
+        <a class="btn btn-primary" href="{% url 'raiting' %}" role="button">рейтинг</a>
+        <a class="btn btn-primary" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
+        <a class="btn btn-primary" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
         {% endif %}
+        <a class="btn btn-primary" href="{% url 'time_tracking' %}" role="button">Учет времени</a>
+
+        <br>
         <h3>Информация:</h3>
         <li>Отдел - {{employee.department_key}}</li>
         <li>Должность - {{employee.position_key}}</li>
@@ -27,21 +35,34 @@
         <li>Отчество - {{employee.employee_patronymic}}</li>
 
         <h3>Мои проекты:</h3>
-        {% for pr in projects %}
-            <li>Название - <a href="{% url 'get_tasks_for_employee' pr.id %}">{{pr.project_name}}</a> </li>
-            Описание - {{pr.project_description}}
-            {{pr.projects_key.all}}
-            {% for p in pr.project_key.all %}
-                {{p}}
-            {% endfor %}
-        {% endfor %}
 
-        
 
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Содержимое</th>
+                    <th scope="col">Предполагаемое начало выполнения</th>
+                    <th scope="col">Предполагаемый конец выполнения</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pr in projects %}
+                <tr>
+                    <th scope="row">{{pr.id}}</th>
+                    <td><a href="{% url 'get_tasks_for_employee' pr.id %}">{{pr.project_name}}</a></td>
+                    <td>{{pr.project_description}}</td>
+                    <td>{{pr.end_date}}</td>
+                    <td>{{pr.end_date}}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    
-
     {% endblock content %}
 </body>
+
 </html>

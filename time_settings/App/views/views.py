@@ -1,4 +1,3 @@
-import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -7,6 +6,7 @@ from django.urls import reverse
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from ..models import *
+from ..forms import *
 
 
 def index(request):
@@ -48,7 +48,22 @@ def get_tasks_for_employee(request, id_task):
 def profile(request):
     employee = Employee.objects.get(user_key=request.user)
     projects = Project.objects.filter(project_user_key=employee)
-    print(employee.position_key)
+    dep = Department.objects.get(department_name=str(employee.department_key))
+    print(dep.count_employee)
+    all_time = Time.objects.filter(time_key=employee)
+    my_all_time = 0.0
+
+    for at in all_time:
+        my_all_time += int(at.time_work.hour)
+    print(my_all_time)
+    
+    # if my_all_time != Raiting.objects.get(raiting_key=dep).total_count:
+    #     print("выполняю")
+    #     rai = Raiting.objects.get(raiting_key=dep)
+    #     rai.total_count = my_all_time
+    #     rai.save()
+
+
     c = {
         'employee' : employee,
         'projects' : projects,
@@ -60,3 +75,67 @@ def profile(request):
 def logout_user(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
+
+def time_tracking(request):
+    current_user = Employee.objects.get(user_key=request.user)
+    # time_tracking = Time.objects.get(time_key=current_user)
+    if request.method == 'POST':
+        form = TimeAddForms(request.POST)
+        print(form)
+        if form.is_valid():
+            time = Time.objects.create(
+                time_key=current_user,
+                date_work=form.cleaned_data['date_work'],
+                time_work=form.cleaned_data['time_work'],
+            )
+            time.save()
+            return redirect(reverse('profile'))
+        else:
+            print('форма не валидная')
+            pass
+    else:
+        form = TimeAddForms()
+
+    c = {
+        'form' : form
+    }
+    return render(request, 'time_tracking.html', c)
+
+
+def raiting(request):
+    departments = Department.objects.all()
+    employee = Employee.objects.filter(department_key__in=departments)
+
+    times = Time.objects.filter(time_key__in=employee)
+
+    for d in departments:
+        employee = Employee.objects.filter(department_key=d)
+        for e in employee:
+            times = Time.objects.filter(time_key=e)
+            temp = 0.0
+            for t in times:
+                temp += int(t.time_work.hour)
+                print(t.time_work)
+
+
+   
+            if not Raiting.objects.filter(raiting_key=d).exists():
+                rait = Raiting.objects.create(
+                    raiting_key = d,
+                    total_count = temp
+                )
+            else:
+                rai = Raiting.objects.get(raiting_key=d)
+                rai.total_count = temp
+                rai.save()
+
+    raiting_all = Raiting.objects.all()
+    print(raiting_all)
+    print(raiting_all)
+    print(raiting_all)
+    c = {
+        'departments' : departments,
+        'raiting_all' : raiting_all,
+    }
+    return render(request, 'raiting.html', c)
+    

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Рейтинг{% endblock title %}</title>
+</head>
+
+<body>
+
+    {% block content %}
+    <div class="container">
+        {% for d in raiting_all %}
+            {{d}}
+        {% endfor %}
+    {% endblock content %}
+
+</body>
+
+</html>

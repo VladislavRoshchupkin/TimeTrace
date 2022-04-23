@@ -104,8 +104,9 @@ class Raiting(models.Model):
 
 
 class Time(models.Model):
-    time_key = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='К какому сотруднику принадлежит')
     """ Учет времени """
+    time_key = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='К какому сотруднику принадлежит')
+  
     # DAYS = [
     #     ('Понедельник', 'Понедельник'),
     #     ('Вторник', 'Вторник'),

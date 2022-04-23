@@ -29,3 +29,24 @@ class ProjectAddedForms(forms.ModelForm):
             'end_date',
         ]
        
+
+class TaskAddedForms(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = [
+            'task_key',
+            'employee_key',
+            'task_name',
+            'task_description',
+            'start_date_task',
+            'end_date_task',
+        ]
+       
+class TimeAddForms(forms.ModelForm):
+    class Meta:
+        model = Time
+        fields = [
+            'date_work',
+            'time_work',
+        ]
+       
