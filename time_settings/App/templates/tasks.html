@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Задачи{% endblock title %}</title>
+</head>
+
+<body>
+
+    {% block content %}
+    <div class="container">
+        Задачи сотрудника:
+        {% for task in tasks %}
+
+            <li>Проект - {{task.task_key}}</li>
+            <li>Описание задачи - {{task.task_description}}</li>
+            <br>
+        {% endfor %}
+
+    </div>
+
+
+    {% endblock content %}
+
+</body>
+
+</html>

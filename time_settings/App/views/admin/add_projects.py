@@ -1,0 +1,38 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.contrib import auth
+from django.http import HttpResponseRedirect
+from django.contrib.auth.hashers import make_password
+
+from app.models import *
+from app.forms import *
+
+def add_project(request):
+    context = {}
+    if request.method == 'POST':
+        form = ProjectAddedForms(request.POST)
+        if form.is_valid():
+            # print(f"form.cleaned_data['project_user_key'] = {form.cleaned_data['project_user_key']}")
+            project = Project.objects.create(
+                # project_user_key = form.cleaned_data['project_user_key'],
+                project_name=form.cleaned_data['project_name'],
+                project_description=form.cleaned_data['project_description'],
+                start_date=form.cleaned_data['start_date'],
+                end_date=form.cleaned_data['end_date'],
+            )
+
+            project.save()
+            project.project_user_key.set(form.cleaned_data['project_user_key'])
+            return redirect(reverse('profile'))
+        else:
+            pass
+    else:
+        # added_employee.html
+        form = ProjectAddedForms()
+    c = {
+        'form' : form
+    }
+    return render(request, 'admin/added_project.html', c)

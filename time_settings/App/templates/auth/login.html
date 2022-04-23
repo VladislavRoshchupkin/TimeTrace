@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Вход{% endblock title %}</title>
+</head>
+
+<body>
+
+    {% block content %}
+
+    <div class="container align-items-center">
+
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-3 mt-3">
+                    <input type="text" name="username" class="form-control" placeholder="Имя пользователя" />
+                </div>
+            </div>
+
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-3 mt-3">
+                    <input type="password" name="password" class="form-control" placeholder="Пароль" />
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mt-4 text-center">Вход</button>
+            </div>
+        </form>
+    </div>
+    {% endblock content %}
+
+
+</body>
+
+</html>

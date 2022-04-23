@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Профиль{% endblock title %}</title>
+</head>
+<body>
+    
+    {% block content %}
+    <div class="container">
+        привет! {{user.username}}
+
+        <a href="{% url 'logout' %}">Выйти</a>
+        <br>
+        {% if request.user.is_superuser %}
+            <a href="{% url 'add_employee' %}">Добавить сотрудника</a>
+            <a href="{% url 'add_project' %}">Добавить Проект</a>
+        {% endif %}
+        <h3>Информация:</h3>
+        <li>Отдел - {{employee.department_key}}</li>
+        <li>Должность - {{employee.position_key}}</li>
+        <li>Фамилия - {{employee.employee_surname}}</li>
+        <li>Имя - {{employee.employee_name}}</li>
+        <li>Отчество - {{employee.employee_patronymic}}</li>
+
+        <h3>Мои проекты:</h3>
+        {% for pr in projects %}
+            <li>Название - <a href="{% url 'get_tasks_for_employee' pr.id %}">{{pr.project_name}}</a> </li>
+            Описание - {{pr.project_description}}
+            {{pr.projects_key.all}}
+            {% for p in pr.project_key.all %}
+                {{p}}
+            {% endfor %}
+        {% endfor %}
+
+        
+
+    </div>
+
+    
+
+    {% endblock content %}
+</body>
+</html>
