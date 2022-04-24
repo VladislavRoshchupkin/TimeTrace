@@ -18,6 +18,13 @@ urlpatterns = [
     path('add_task/', tasks.add_task, name='add_task'),
     path('raiting/', raiting, name='raiting'),
 
+    # Изменение профиля
     path('profile/edit/<int:id>', edit_user, name='edit_user'),
+
+    # Изменение проекта
+    path('profile/<int:id>/edit', projects.edit_project, name='edit_project'),
+    # Удаления проекта
+    path('profile/<int:id>/delete_project', projects.delete_project, name='delete_project'),
+
 
 ]

@@ -36,3 +36,33 @@ def add_project(request):
         'form' : form
     }
     return render(request, 'admin/added_project.html', c)
+
+# Функция изменения сотрудников на проекте(доделать)
+def edit_project(request, id):
+    context = {}
+    project = Project.objects.get(id=id)
+    if request.method == 'POST':
+        form = ProjectAddedForms(request.POST, instance=project)
+        if form.is_valid():
+            project.project_name=form.cleaned_data['project_name']
+            project.project_description=form.cleaned_data['project_description']
+            project.start_date=str(form.cleaned_data['start_date'])
+            project.end_date=str(form.cleaned_data['end_date'])
+            project.project_user_key.set(form.cleaned_data['project_user_key'])
+            project.save()
+            return redirect(reverse('profile'))
+        else:
+            pass
+    else:
+        # added_employee.html
+        form = ProjectAddedForms(instance=project)
+    c = {
+        'form' : form
+    }
+    return render(request, 'edit_project.html', c)
+
+# Функция изменения сотрудников на проекте(доделать)
+def delete_project(request, id):
+    project = Project.objects.get(id=id)
+    project.delete()
+    return redirect(reverse('profile'))

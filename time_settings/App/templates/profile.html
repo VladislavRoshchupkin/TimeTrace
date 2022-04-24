@@ -43,6 +43,8 @@
                     {% elif request.user.is_staff %}
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
+                        <a class="dropdown-item" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
+                        <a class="dropdown-item" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
                     </div>
                     
                     {% else %}
@@ -89,6 +91,7 @@
                     <th scope="col">Содержимое</th>
                     <th scope="col">Предполагаемое начало выполнения</th>
                     <th scope="col">Предполагаемый конец выполнения</th>
+                    <th scope="col">Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -99,6 +102,13 @@
                     <td>{{pr.project_description}}</td>
                     <td>{{pr.start_date}}</td>
                     <td>{{pr.end_date}}</td>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+    
+                        <td>
+                            <a href="{% url 'edit_project' pr.id %}">Изменить</a> |
+                            <a href="{% url 'delete_project' pr.id %}">Удалить</a>
+                        </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>

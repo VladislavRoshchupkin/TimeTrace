@@ -17,19 +17,19 @@
         <form action="" method="POST">
             {% csrf_token %}
 
-            <label for="">task_key</label>
+            <label for="">Какому проекту принадлежит</label>
             {{ form.task_key }}
             <br>
 
 
-            <label for="">employee_key</label>
+            <label for="">Каким сотрудникам принадлежит</label>
             {{ form.employee_key }}
             <br>
-            <label for="">task_name</label>
+            <label for="">Название задачи</label>
             {{ form.task_name }}
             <br>
 
-            <label for="">task_description</label>
+            <label for="">Описание задачи</label>
             {{ form.task_description }}
             <br>
 
