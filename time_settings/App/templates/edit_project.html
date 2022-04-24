@@ -12,7 +12,34 @@
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
-            {{form.as_p}}
+            <label for="">К каким сотрудникам принадлежит</label>
+            {{ form.project_user_key }}
+            <br>
+    
+            <label for="">НАзвание проекта</label>
+            {{ form.project_name }}
+            <br>
+            <label for="">Описание проекта</label>
+            {{ form.project_description }}
+            <br>
+
+
+
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <label for="">Дата начала</label>
+                {{ form.start_date }}
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+
+            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                <label for="">Дата завершения</label>
+                {{ form.end_date }}
+                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
             <button type="submit">Сохранить</button>
         </form>
     {% endblock content %}

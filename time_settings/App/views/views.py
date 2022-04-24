@@ -33,13 +33,19 @@ def login_user(request):
     return render(request, 'auth/login.html')
 
 
-def get_tasks_for_employee(request, id_task):
+def get_tasks_for_employee(request, id_project):
     employee = Employee.objects.get(user_key=request.user)
-    project = Project.objects.get(id=id_task)
+    project = Project.objects.get(id=id_project)
     tasks = Task.objects.filter(employee_key=employee, task_key=project)
-    print(tasks)
+    times = Time.objects.filter(time_key=employee, task_key__in=tasks)
+    d = {}
+    for k, v in enumerate(times):
+        d[k] = v
+    print(d)
     c = {
-        'tasks' : tasks
+        'tasks' : tasks,
+        'project_name' : project.project_name,
+        'times' : d
     }
     return render(request, 'tasks.html', c)
 
@@ -78,28 +84,31 @@ def logout_user(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
 
-def time_tracking(request):
+def time_tracking(request, id):
     current_user = Employee.objects.get(user_key=request.user)
-    # time_tracking = Time.objects.get(time_key=current_user)
+    task = Task.objects.get(id=id)
+    # times = Time.objects.filter(time_key=current_user, task_key=task)
+
     if request.method == 'POST':
         form = TimeAddForms(request.POST)
-        print(form)
         if form.is_valid():
             time = Time.objects.create(
                 time_key=current_user,
+                task_key=task,
                 date_work=form.cleaned_data['date_work'],
                 time_work=form.cleaned_data['time_work'],
             )
+            task.completed = True
+            task.save()
             time.save()
             return redirect(reverse('profile'))
         else:
-            print('форма не валидная')
             pass
     else:
         form = TimeAddForms()
 
     c = {
-        'form' : form
+        'form' : form,
     }
     return render(request, 'time_tracking.html', c)
 

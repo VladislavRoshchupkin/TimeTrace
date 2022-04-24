@@ -10,6 +10,7 @@
 
     {% block content %}
     <div class="container">
+        <h3>Название проекта - {{project_name}}</h3>
         Задачи сотрудника:
 
         <table class="table">
@@ -21,22 +22,40 @@
                     <th scope="col">Содержмое задачи</th>
                     <th scope="col">Предполагаемое начало выполнения</th>
                     <th scope="col">Предполагаемый конец выполнения</th>
+                    <th scope="col">Действия</th>
+                    <th scope="col">Учет</th>
                 </tr>
             </thead>
             <tbody>
                 {% for task in tasks %}
+                    
                 <tr>
                     <th scope="row">{{task.id}}</th>
-
+                    
                     <td>{{task.task_key}}</td>
                     <td>{{task.task_name}}</td>
                     <td>{{task.task_description}}</td>
                     <td>{{task.start_date_task}}</td>
                     <td>{{task.end_date_task}}</td>
-
-                </tr>
-
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                        <td>
+                            <a href="{% url 'edit_task' task.id %}">Изменить</a> |
+                            <a href="{% url 'delete_task' task.id %}">Удалить</a>
+                        </td>
+                    {% endif %}
+                
+                {% if task.completed %}
+                    <td>Задача выполнена</td>
+                    <!-- {% for k, v in times.items %}
+                        {{t.time_work}}
+                        {{k}} {{v}}
+                    {% endfor %} -->
+            
+                {% else %}
+                    <td><a class="btn btn-primary" href="{% url 'time_tracking' task.id %}" role="button">Учет времени</a></td>
+                {% endif %}
                 {% endfor %}
+                
             </tbody>
         </table>
     </div>

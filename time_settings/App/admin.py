@@ -37,6 +37,7 @@ class TaskAdmin(admin.ModelAdmin):
         'task_description',
         'start_date_task',
         'end_date_task',
+        'completed',
     ]
 
 
@@ -59,6 +60,7 @@ class RaitingAdmin(admin.ModelAdmin):
 class TimeAdmin(admin.ModelAdmin):
     list_display = [
         'id',
+        'task_key',
         'time_key',
         'date_work',
         'time_work',

@@ -3,56 +3,51 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% block title %}Изменить проект{% endblock title %}</title>
 </head>
 
 <body>
+
     {% block content %}
-
-
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
-
-            <label for="">project_user_key</label>
-            {{ form.project_user_key }}
+            <label for="">Какому проекту принадлежит задача</label>
+            {{ form.task_key }}
             <br>
     
-
-            <label for="">project_name</label>
-            {{ form.project_name }}
+            <label for="">Какому сотруднику принадлежит задача</label>
+            {{ form.employee_key }}
             <br>
-            <label for="">project_description</label>
-            {{ form.project_description }}
+            <label for="">Название задачи</label>
+            {{ form.task_name }}
+            <br>
+
+            <label for="">Описание задачи</label>
+            {{ form.task_description }}
             <br>
 
 
 
             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                {{ form.start_date }}
+                <label for="">Дата начала</label>
+                {{ form.start_date_task }}
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
             </div>
 
             <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                {{ form.end_date }}
+                <label for="">Дата завершения</label>
+                {{ form.end_date_task }}
                 <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
             </div>
-
-            
-            <button type="submit">Добавить</button>
+            <button type="submit">Сохранить</button>
         </form>
-    </div>
-
     {% endblock content %}
-    
+
 </body>
 
 </html>
-

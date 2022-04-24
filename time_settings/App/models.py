@@ -1,7 +1,5 @@
-from statistics import mode
 from django.db import models
 from django.contrib.auth.models import User
-from django.urls import reverse
 
 
 class Department(models.Model):
@@ -81,14 +79,14 @@ class Task(models.Model):
     task_description = models.TextField(max_length=250, verbose_name='Содержмое задачи')
     start_date_task = models.DateTimeField(verbose_name='Предполагаемое начало выполнения')
     end_date_task = models.DateTimeField(verbose_name='Предполагаемый конец выполнения')
-
+    completed = models.BooleanField(default=False, verbose_name='Статус выполненной задачи')
     
     class Meta:
         verbose_name = 'задачу'
         verbose_name_plural = 'Задачи'
 
     def __str__(self):
-        return f'{self.task_key}'
+        return f'{self.task_name}'
 
 
 class Raiting(models.Model):
@@ -106,7 +104,7 @@ class Raiting(models.Model):
 class Time(models.Model):
     """ Учет времени """
     time_key = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='К какому сотруднику принадлежит')
-  
+    task_key = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='К какой задаче принадлежит',related_name='task')
     # DAYS = [
     #     ('Понедельник', 'Понедельник'),
     #     ('Вторник', 'Вторник'),
@@ -131,7 +129,7 @@ class Time(models.Model):
         verbose_name_plural = 'учеты времени'
 
     def __str__(self):
-        return f'{self.time_key}'
+        return f'{self.task_key}'
 
     
 # class Notice(models.Model):

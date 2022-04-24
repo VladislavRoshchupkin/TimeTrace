@@ -11,57 +11,7 @@
 
 <body>
 
-    {% block nav %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">TimeTrace</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Главная</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'edit_user' request.user.id %}">Изменить профиль</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Функции
-                    </a>
-                    {% if request.user.is_superuser %}
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'add_employee' %}" role="button">Добавить сотрудника</a>
-                        <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
-                        <a class="dropdown-item" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
-                        <a class="dropdown-item" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
-                    </div>
-                    {% elif request.user.is_staff %}
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
-                        <a class="dropdown-item" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
-                        <a class="dropdown-item" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
-                    </div>
-                    
-                    {% else %}
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
-                        </div>
-                    {% endif %}
-                </li>
-
-      
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    {% endblock nav %}
 
     {% block content %}
     <div class="container">
@@ -69,7 +19,6 @@
         Вы - {{position}}
         <br>
 
-        <a class="btn btn-primary" href="{% url 'time_tracking' %}" role="button">Учет времени</a>
 
         <br>
         <h3>Информация:</h3>
@@ -103,7 +52,6 @@
                     <td>{{pr.start_date}}</td>
                     <td>{{pr.end_date}}</td>
                     {% if request.user.is_superuser or request.user.is_staff %}
-    
                         <td>
                             <a href="{% url 'edit_project' pr.id %}">Изменить</a> |
                             <a href="{% url 'delete_project' pr.id %}">Удалить</a>
@@ -115,9 +63,7 @@
         </table>
     </div>
 
-    {% if position_manager == 'Менеджер' %}
-        Вы
-    {% endif %}
+
     {% endblock content %}
 </body>
 
