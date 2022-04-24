@@ -49,13 +49,14 @@ def profile(request):
     employee = Employee.objects.get(user_key=request.user)
     projects = Project.objects.filter(project_user_key=employee)
     dep = Department.objects.get(department_name=str(employee.department_key))
-    print(dep.count_employee)
+
+    if str(employee.position_key) == 'Менеджер':
+        print('Пользователь менеджер')
     all_time = Time.objects.filter(time_key=employee)
     my_all_time = 0.0
 
     for at in all_time:
-        my_all_time += int(at.time_work.hour)
-    print(my_all_time)
+        my_all_time += int(at.time_work)
     
     # if my_all_time != Raiting.objects.get(raiting_key=dep).total_count:
     #     print("выполняю")
@@ -67,6 +68,7 @@ def profile(request):
     c = {
         'employee' : employee,
         'projects' : projects,
+        'position' : employee.position_key,
     }
     return render(request, 'profile.html', c)
 
@@ -114,11 +116,8 @@ def raiting(request):
             times = Time.objects.filter(time_key=e)
             temp = 0.0
             for t in times:
-                temp += int(t.time_work.hour)
+                temp += int(t.time_work)
                 print(t.time_work)
-
-
-   
             if not Raiting.objects.filter(raiting_key=d).exists():
                 rait = Raiting.objects.create(
                     raiting_key = d,
@@ -130,12 +129,34 @@ def raiting(request):
                 rai.save()
 
     raiting_all = Raiting.objects.all()
-    print(raiting_all)
-    print(raiting_all)
-    print(raiting_all)
     c = {
         'departments' : departments,
         'raiting_all' : raiting_all,
     }
     return render(request, 'raiting.html', c)
     
+
+# Функция редактирования пользователя
+def edit_user(request, id):
+    edit_user = Employee.objects.get(pk=id)
+    if request.user.is_superuser:
+        model = EditUserAdminForms
+    else:
+        model = EditUserForms
+
+    if request.method == 'POST':
+        form = model(request.POST, instance=edit_user)
+        if form.is_valid():
+            # note = form.save(commit=False)
+            edit_user.employee_surname = form.cleaned_data['employee_surname']
+            edit_user.employee_name = form.cleaned_data['employee_name']
+            edit_user.employee_patronymic = form.cleaned_data['employee_patronymic']
+            edit_user.user_key = request.user
+            edit_user.save()
+            return redirect('profile')
+    else:
+        form = model(instance=edit_user)
+    context = {
+                'form' : form,
+    }
+    return render(request, 'edit_profile.html', context=context)

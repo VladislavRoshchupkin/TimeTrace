@@ -17,4 +17,7 @@ urlpatterns = [
     path('add_project/', projects.add_project, name='add_project'),
     path('add_task/', tasks.add_task, name='add_task'),
     path('raiting/', raiting, name='raiting'),
+
+    path('profile/edit/<int:id>', edit_user, name='edit_user'),
+
 ]

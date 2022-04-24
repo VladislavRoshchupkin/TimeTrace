@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from app.models import *
 
 class EmployeeAddedForms(forms.ModelForm):
@@ -50,3 +51,16 @@ class TimeAddForms(forms.ModelForm):
             'time_work',
         ]
        
+class EditUserForms(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = [
+            'employee_surname',
+            'employee_name',
+            'employee_patronymic',
+        ]
+       
+class EditUserAdminForms(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = '__all__'

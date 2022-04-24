@@ -11,19 +11,62 @@
 
 <body>
 
+    {% block nav %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">TimeTrace</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'edit_user' request.user.id %}">Изменить профиль</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Функции
+                    </a>
+                    {% if request.user.is_superuser %}
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'add_employee' %}" role="button">Добавить сотрудника</a>
+                        <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
+                        <a class="dropdown-item" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
+                        <a class="dropdown-item" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
+                    </div>
+                    {% elif request.user.is_staff %}
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
+                    </div>
+                    
+                    {% else %}
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
+                        </div>
+                    {% endif %}
+                </li>
+
+      
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% endblock nav %}
+
     {% block content %}
     <div class="container">
         привет! {{user.username}}
- 
-        <a href="{% url 'logout' %}">Выйти</a>
+        Вы - {{position}}
         <br>
-        {% if request.user.is_superuser %}
 
-        <a class="btn btn-primary" href="{% url 'add_employee' %}" role="button">Добавить сотрудника</a>
-        <a class="btn btn-primary" href="{% url 'raiting' %}" role="button">рейтинг</a>
-        <a class="btn btn-primary" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
-        <a class="btn btn-primary" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
-        {% endif %}
         <a class="btn btn-primary" href="{% url 'time_tracking' %}" role="button">Учет времени</a>
 
         <br>
@@ -33,7 +76,7 @@
         <li>Фамилия - {{employee.employee_surname}}</li>
         <li>Имя - {{employee.employee_name}}</li>
         <li>Отчество - {{employee.employee_patronymic}}</li>
-
+        <li>Количество выходных - {{employee.weekend_count}}</li>
         <h3>Мои проекты:</h3>
 
 
@@ -54,14 +97,17 @@
                     <th scope="row">{{pr.id}}</th>
                     <td><a href="{% url 'get_tasks_for_employee' pr.id %}">{{pr.project_name}}</a></td>
                     <td>{{pr.project_description}}</td>
+                    <td>{{pr.start_date}}</td>
                     <td>{{pr.end_date}}</td>
-                    <td>{{pr.end_date}}</td>
-
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    {% if position_manager == 'Менеджер' %}
+        Вы
+    {% endif %}
     {% endblock content %}
 </body>
 

@@ -10,11 +10,11 @@
 
     {% block content %}
     <div class="container">
-        {% for d in raiting_all %}
-            Отдел - {{d.raiting_key}},
-            Общее количество часов - {{d.total_count}}
-            <br>
-        {% endfor %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Сохранить</button>
+        </form>
     {% endblock content %}
 
 </body>

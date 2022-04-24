@@ -15,12 +15,18 @@ def add_employee(request):
     if request.method == 'POST':
         form = EmployeeAddedForms(request.POST)
         if form.is_valid():
+            if str(form.cleaned_data['position_key']) == 'Менеджер':
+                staff = True
+            else:
+                staff = False
+                
             user = User.objects.create(
                 username=form.cleaned_data['username'],
                 email=form.cleaned_data['email'],
                 password=make_password(form.cleaned_data['password']),
+                is_staff=staff,
             )
-
+            # is_staff
             emp = Employee.objects.create(
                 user_key = user,
                 department_key=form.cleaned_data['department_key'],

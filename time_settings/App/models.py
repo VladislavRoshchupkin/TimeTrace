@@ -123,7 +123,7 @@ class Time(models.Model):
     # )
 
     date_work = models.DateField(verbose_name='Выбранный день работы')
-    time_work = models.TimeField(verbose_name='Проработанное количество часов')
+    time_work = models.IntegerField(verbose_name='Проработанное количество часов')
 
 
     class Meta:
