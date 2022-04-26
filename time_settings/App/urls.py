@@ -31,5 +31,7 @@ urlpatterns = [
     # Удаления задачи
     path('task/<int:id>/delete_task', tasks.delete_task, name='delete_task'),
 
+    path('event/new/', event, name='event_new'),
+
 
 ]

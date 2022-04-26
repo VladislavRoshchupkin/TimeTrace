@@ -56,11 +56,12 @@ class Employee(models.Model):
 class Project(models.Model):
     """ Класс проектов """
     project_user_key = models.ManyToManyField(Employee, related_name='project_key', verbose_name='К каким сотрудникам принадллежит проект')
+    # кто является менеджером foreing.key
     project_name = models.CharField(max_length=150, verbose_name='Название проекта')
     project_description = models.TextField(max_length=250, verbose_name='Содержмое')
     start_date = models.DateTimeField(verbose_name='Предполагаемое начало выполнения')
     end_date = models.DateTimeField(verbose_name='Предполагаемый конец выполнения')
-
+    
     class Meta:
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'

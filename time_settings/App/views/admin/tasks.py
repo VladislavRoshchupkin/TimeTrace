@@ -50,6 +50,7 @@ def edit_task(request, id):
             task.start_date_task=str(form.cleaned_data['start_date_task'])
             task.end_date_task=str(form.cleaned_data['end_date_task'])
 
+            # Чтобы не отображался админ
             task.employee_key.set(form.cleaned_data['employee_key'])
             task.save()
             return redirect(reverse('get_tasks_for_employee', args=[str(task.task_key.id)]))

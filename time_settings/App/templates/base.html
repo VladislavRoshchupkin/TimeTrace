@@ -66,7 +66,7 @@
                     {% elif request.user.is_staff %}
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
-                        <a class="dropdown-item" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
+                        <a class="dropdown-item" href="{% url 'add_employee' %}" role="button">Добавить сотрудника</a>
                         <a class="dropdown-item" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
                     </div>
                     
@@ -94,10 +94,10 @@
     <script>
         $(function () {
             $("#datetimepicker1").datetimepicker({
-                format: 'DD.MM.YYYY HH:mm',
+                format: 'YYYY-MM-DD HH:mm',
             });
             $("#datetimepicker2").datetimepicker({
-                format: 'DD.MM.YYYY HH:mm',
+                format: 'YYYY-MM-DD HH:mm',
             });
         });
     </script>

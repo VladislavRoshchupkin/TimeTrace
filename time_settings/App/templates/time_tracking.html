@@ -23,12 +23,12 @@
                 </div>
             </div>
             {{ form.time_work }}
-    
+            {{html_out|safe }}
 
             <script>
                 $(function () {
                     $("#datetimepicker1").datetimepicker({
-                        format: 'DD.MM.YYYY',
+                        format: 'YYYY-MM-DD HH:SS',
                     });
                     $("#datetimepicker2").datetimepicker({
                         format: 'HH:mm',

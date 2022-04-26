@@ -34,6 +34,7 @@ class TaskAdmin(admin.ModelAdmin):
         'id',
         'task_key',
         # 'employee_key',
+        'task_name',
         'task_description',
         'start_date_task',
         'end_date_task',

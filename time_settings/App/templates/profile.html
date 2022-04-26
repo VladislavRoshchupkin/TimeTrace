@@ -61,6 +61,36 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {% if is_superuser %}
+        <h3>Сотрудники:</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">К какому User относится</th>
+                    <th scope="col">К какому отделу относится</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Отчество</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for em in employee %}
+                <tr>
+                    <th scope="row">{{em.id}}</th>
+                    <td>{{em.user_key}}</td>
+                    <td>{{em.department_key}}</td>
+                    <td>{{em.employee_surname}}</td>
+                    <td>{{em.employee_name}}</td>
+                    <td>{{em.employee_patronymic}}</td>
+
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
     </div>
 
 
