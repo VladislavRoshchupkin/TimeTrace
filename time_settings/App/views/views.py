@@ -11,6 +11,23 @@ from datetime import datetime
 from ..utils import Calendar
 import datetime
 
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.views import generic
+from django.utils.safestring import mark_safe
+from datetime import timedelta, datetime, date
+import calendar
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy, reverse
+
+
+from ..models import Time
+from ..utils import Calendar
+from ..forms import TimeAddForms
+
+
+
 def index(request):
     if request.user.is_authenticated:
         return redirect(reverse('profile'))
@@ -113,7 +130,7 @@ def time_tracking(request, id):
     for event in events:
         event_list.append(
             {
-                "title": event.task_key.task_name,
+                "title": f'{event.task_key.id} - {event.task_key.task_name} - {event.time_work}ч',
                 "start": event.date_work.strftime("%Y-%m-%d"),
                 "end": event.date_work.strftime("%Y-%m-%d")
             }
@@ -205,21 +222,6 @@ def edit_user(request, id):
 
 
 # ===============================
-
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.views import generic
-from django.utils.safestring import mark_safe
-from datetime import timedelta, datetime, date
-import calendar
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy, reverse
-
-
-from ..models import Time
-from ..utils import Calendar
-from ..forms import TimeAddForms
 
 
 def get_date(req_day):

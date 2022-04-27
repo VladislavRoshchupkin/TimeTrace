@@ -44,16 +44,12 @@
                         </td>
                     {% endif %}
                 
-                {% if task.completed %}
-                    <td>Задача выполнена</td>
-                    <!-- {% for k, v in times.items %}
-                        {{t.time_work}}
-                        {{k}} {{v}}
-                    {% endfor %} -->
-            
-                {% else %}
+        
+                <!-- if task.completed -->
+                    <!-- <td>Задача выполнена</td> -->
+                        
                     <td><a class="btn btn-primary" href="{% url 'time_tracking' task.id %}" role="button">Учет времени</a></td>
-                {% endif %}
+              
                 {% endfor %}
                 
             </tbody>
