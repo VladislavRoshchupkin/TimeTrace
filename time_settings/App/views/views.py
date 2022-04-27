@@ -9,7 +9,7 @@ from ..forms import *
 import calendar
 from datetime import datetime
 from ..utils import Calendar
-
+import datetime
 
 def index(request):
     if request.user.is_authenticated:
@@ -43,7 +43,7 @@ def get_tasks_for_employee(request, id_project):
     d = {}
     for k, v in enumerate(times):
         d[k] = v
-    print(d)
+
     c = {
         'tasks' : tasks,
         'project_name' : project.project_name,
@@ -102,6 +102,22 @@ def time_tracking(request, id):
     current_user = Employee.objects.get(user_key=request.user)
     task = Task.objects.get(id=id)
     # times = Time.objects.filter(time_key=current_user, task_key=task)
+    events = Time.objects.filter(time_key=current_user)
+    events_month = Time.objects.filter(
+            time_key=current_user,
+            date_work=datetime.now().date(),
+        )
+    
+    event_list = []
+    # start: '2020-09-16T16:00:00'
+    for event in events:
+        event_list.append(
+            {
+                "title": event.task_key.task_name,
+                "start": event.date_work.strftime("%Y-%m-%d"),
+                "end": event.date_work.strftime("%Y-%m-%d")
+            }
+        )
 
     if request.method == 'POST':
         form = TimeAddForms(request.POST)
@@ -120,9 +136,10 @@ def time_tracking(request, id):
             pass
     else:
         form = TimeAddForms()
+    
 
     c = {
-        'form' : form,
+        "form": form, "events": event_list, "events_month": events_month
     }
     return render(request, 'time_tracking.html', c)
 
@@ -189,56 +206,136 @@ def edit_user(request, id):
 
 # ===============================
 
-from datetime import datetime, timedelta, date
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from django.views import generic
-from django.urls import reverse
 from django.utils.safestring import mark_safe
+from datetime import timedelta, datetime, date
 import calendar
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy, reverse
 
-from ..models import *
+
+from ..models import Time
 from ..utils import Calendar
+from ..forms import TimeAddForms
 
-class CalendarView(generic.ListView):
-    model = Time
-    template_name = 'cal/calendar.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        d = get_date(self.request.GET.get('month', None))
-        cal = Calendar(d.year, d.month)
-        html_cal = cal.formatmonth(withyear=True)
-        context['calendar'] = mark_safe(html_cal)
-        context['prev_month'] = prev_month(d)
-        context['next_month'] = next_month(d)
-        return context
-
-def get_date(req_month):
-    if req_month:
-        year, month = (int(x) for x in req_month.split('-'))
+def get_date(req_day):
+    if req_day:
+        year, month = (int(x) for x in req_day.split("-"))
         return date(year, month, day=1)
     return datetime.today()
+
 
 def prev_month(d):
     first = d.replace(day=1)
     prev_month = first - timedelta(days=1)
-    month = 'month=' + str(prev_month.year) + '-' + str(prev_month.month)
+    month = "month=" + str(prev_month.year) + "-" + str(prev_month.month)
     return month
+
 
 def next_month(d):
     days_in_month = calendar.monthrange(d.year, d.month)[1]
     last = d.replace(day=days_in_month)
     next_month = last + timedelta(days=1)
-    month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
+    month = "month=" + str(next_month.year) + "-" + str(next_month.month)
     return month
 
-def event(request, event_id=None):
-    form = TimeAddForms(request.POST)
+
+class CalendarView(LoginRequiredMixin, generic.ListView):
+    model = Time
+    template_name = "cal/calendar.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get("month", None))
+        cal = Calendar(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True)
+        context["calendar"] = mark_safe(html_cal)
+        context["prev_month"] = prev_month(d)
+        context["next_month"] = next_month(d)
+        return context
+
+
+@login_required(login_url="signup")
+def create_event(request):
+    current_user = Employee.objects.get(user_key=request.user)
+    task = Task.objects.get(id=id)
+    form = TimeAddForms(request.POST or None)
     if request.POST and form.is_valid():
-        form.save()
-        return HttpResponseRedirect(reverse(redirect('calendar')))
-    return render(request, 'cal/event.html', {'form': form})
+        title = form.cleaned_data["title"]
+        description = form.cleaned_data["description"]
+        start_time = form.cleaned_data["start_time"]
+        end_time = form.cleaned_data["end_time"]
+        time = Time.objects.create(
+                time_key=current_user,
+                task_key=task,
+                date_work=form.cleaned_data['date_work'],
+                time_work=form.cleaned_data['time_work'],
+            )
+        task.completed = True
+        task.save()
+        time.save()
+        return redirect(reverse('profile'))
+
+        
+        # return HttpResponseRedirect(reverse("calendarapp:calendar"))
+    return render(request, "event.html", {"form": form})
 
 
 
+
+
+class CalendarViewNew(LoginRequiredMixin, generic.View):
+    template_name = "time_tracking.html"
+    form_class = TimeAddForms
+    def get(self, request, *args, **kwargs):
+        print('getff')
+        employee = Employee.objects.get(user_key=request.user)
+        forms = self.form_class()
+        events = Time.objects.filter(time_key=employee)
+        events_month = Time.objects.filter(
+            time_key=employee,
+            date_work=datetime.now().date(),
+        )
+      
+        event_list = []
+        # start: '2020-09-16T16:00:00'
+        for event in events:
+            event_list.append(
+                {
+                    "title": event.task_key.task_name,
+                    "start": event.date_work.strftime("%Y-%m-%d"),
+                    "end": event.date_work.strftime("%Y-%m-%d")
+                }
+            )
+
+
+        context = {"form": forms, "events": event_list, "events_month": events_month}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        forms = self.form_class(request.POST)
+        if forms.is_valid():
+            form = forms.save(commit=False)
+            form.user = request.user
+            form.save()
+            return redirect("calendarapp:calendar")
+        context = {"form": forms}
+        return render(request, self.template_name, context)
+
+
+#  def get_all_events(self, user):
+#         events = Event.objects.filter(user=user, is_active=True, is_deleted=False)
+#         return events
+
+#     def get_running_events(self, user):
+#         running_events = Event.objects.filter(
+#             user=user,
+#             is_active=True,
+#             is_deleted=False,
+#             end_time__gte=datetime.now().date(),
+#         ).order_by("start_time")
+#         return running_events

@@ -47,6 +47,7 @@ class TimeAddForms(forms.ModelForm):
     class Meta:
         model = Time
         fields = [
+            # 'task_key',
             'date_work',
             'time_work',
         ]

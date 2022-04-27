@@ -81,6 +81,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'calendar' %}">Учет времени</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -102,6 +105,17 @@
         });
     </script>
     {% endblock scrript %}
+    {% block extracss %}
+    {% endblock extracss %}
+    <div class="app-title">
+      {% block breadcrumb %}
+      {% endblock breadcrumb %}
+    </div>
 
+  
+    <!-- Essential javascripts for application to work-->
+  
+    {% block extrascripts %}
+    {% endblock extrascripts %}
 </body>
 </html>

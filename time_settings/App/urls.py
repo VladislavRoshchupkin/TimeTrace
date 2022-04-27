@@ -31,7 +31,7 @@ urlpatterns = [
     # Удаления задачи
     path('task/<int:id>/delete_task', tasks.delete_task, name='delete_task'),
 
-    path('event/new/', event, name='event_new'),
-
-
+    path("calendar/", CalendarViewNew.as_view(), name="calendar"),
+    path("calenders/", CalendarView.as_view(), name="calendars"),
+    path("event/new/", create_event, name="event_new"),
 ]
