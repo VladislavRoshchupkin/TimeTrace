@@ -89,17 +89,18 @@ def profile(request):
     #     rai = Raiting.objects.get(raiting_key=dep)
     #     rai.total_count = my_all_time
     #     rai.save()
-
+    print(employee)
     if is_superuser:
         c = {
             'employee' : Employee.objects.all(),
+            'profile_info' : Employee.objects.get(user_key=request.user),
             'projects' : projects,
             'position' : employee.position_key,
             'is_superuser' : is_superuser
         }
     else:
         c = {
-            'employee' : employee,
+            'profile_info' : Employee.objects.get(user_key=request.user),
             'projects' : projects,
             'position' : employee.position_key,
             'is_superuser' : is_superuser
@@ -143,12 +144,13 @@ def time_tracking(request, id):
                 time_key=current_user,
                 task_key=task,
                 date_work=form.cleaned_data['date_work'],
+                description=form.cleaned_data['description'],
                 time_work=form.cleaned_data['time_work'],
             )
             task.completed = True
             task.save()
             time.save()
-            return redirect(reverse('profile'))
+            return redirect(reverse('time_tracking', args=[id]))
         else:
             pass
     else:
@@ -328,16 +330,3 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
         context = {"form": forms}
         return render(request, self.template_name, context)
 
-
-#  def get_all_events(self, user):
-#         events = Event.objects.filter(user=user, is_active=True, is_deleted=False)
-#         return events
-
-#     def get_running_events(self, user):
-#         running_events = Event.objects.filter(
-#             user=user,
-#             is_active=True,
-#             is_deleted=False,
-#             end_time__gte=datetime.now().date(),
-#         ).order_by("start_time")
-#         return running_events

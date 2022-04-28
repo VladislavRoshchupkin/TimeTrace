@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -106,6 +107,11 @@ class Time(models.Model):
     """ Учет времени """
     time_key = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='К какому сотруднику принадлежит')
     task_key = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='К какой задаче принадлежит',related_name='task')
+    description = models.TextField(
+        max_length=100,
+        verbose_name='Описание',
+        default=''
+    )
     # DAYS = [
     #     ('Понедельник', 'Понедельник'),
     #     ('Вторник', 'Вторник'),

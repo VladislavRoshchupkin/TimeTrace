@@ -63,6 +63,7 @@ class TimeAdmin(admin.ModelAdmin):
         'id',
         'task_key',
         'time_key',
+        'description',
         'date_work',
         'time_work',
     ]

@@ -30,8 +30,7 @@
                         <form method="post">
                             {% csrf_token %}
                             <div class="modal-body">
-       
-                        
+
                               <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                                 <label for="">Дата начала</label>
                                 {{ form.date_work }}
@@ -43,6 +42,10 @@
                                     <label for="message-text" class="col-form-label">Количество часов:</label>
                                     {{ form.time_work }}
                                 </div>
+   
+                                  <label for="message-text" class="col-form-label">Описание:</label>
+                                  {{ form.description }}
+                  
                             </div>
                             <div class="modal-footer">
                                 <button id="modalClose2" type="button" class="btn btn-danger">Close</button>
