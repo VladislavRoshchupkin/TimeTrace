@@ -5,6 +5,9 @@ from .views.admin import employees, projects, tasks
 urlpatterns = [
     path('', index, name='index'),
     path('profile/', profile, name='profile'),
+
+    # часы сторудников
+    path('profile/time_work/<int:id>', get_time_all, name='get_time_all'),
     path('profile/task/<int:id_project>/', get_tasks_for_employee, name='get_tasks_for_employee'),
     path('time_tracking/<int:id>', time_tracking, name='time_tracking'),
     path('login/', login_user, name='login'),

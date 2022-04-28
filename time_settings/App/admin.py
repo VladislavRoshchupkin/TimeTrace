@@ -23,6 +23,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'project_name',
+        'manager_key',
         'project_description',
         'start_date',
         'end_date',

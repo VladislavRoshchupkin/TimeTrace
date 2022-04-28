@@ -89,7 +89,7 @@ def profile(request):
     #     rai = Raiting.objects.get(raiting_key=dep)
     #     rai.total_count = my_all_time
     #     rai.save()
-    print(employee)
+
     if is_superuser:
         c = {
             'employee' : Employee.objects.all(),
@@ -330,3 +330,7 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
         context = {"form": forms}
         return render(request, self.template_name, context)
 
+def get_time_all(request, id):
+    project = Project.objects.get(id=id)
+    print(project)
+    return render(request, 'show_time.html')

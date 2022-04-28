@@ -37,6 +37,7 @@ class Position(models.Model):
 class Employee(models.Model):
     """ Класс сотрудника """
     user_key = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='К какому User относится')
+    
     department_key = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name='К какому отделу относится')
     position_key = models.ForeignKey(Position, on_delete=models.CASCADE, verbose_name='Должность',
         related_name='position')
@@ -51,13 +52,15 @@ class Employee(models.Model):
         verbose_name_plural = 'Сотрудники'
 
     def __str__(self):
-        return f'{self.employee_surname} {self.employee_name}'
+        return f'{self.employee_surname} {self.employee_name} ({self.position_key})'
 
 
 class Project(models.Model):
     """ Класс проектов """
     project_user_key = models.ManyToManyField(Employee, related_name='project_key', verbose_name='К каким сотрудникам принадллежит проект')
     # кто является менеджером foreing.key
+    manager_key = models.ForeignKey(Employee, related_name='manager_user_key', on_delete=models.CASCADE, \
+    verbose_name='К какому менеджеру')
     project_name = models.CharField(max_length=150, verbose_name='Название проекта')
     project_description = models.TextField(max_length=250, verbose_name='Содержмое')
     start_date = models.DateTimeField(verbose_name='Предполагаемое начало выполнения')

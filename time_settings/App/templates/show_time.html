@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Участники{% endblock title %}</title>
+</head>
+
+<body>
+
+    {% block content %}
+    <div class="container">
+        {% for d in raiting_all %}
+            Отдел - {{d.raiting_key}},
+            Общее количество часов - {{d.total_count}}
+            <br>
+        {% endfor %}
+    {% endblock content %}
+
+</body>
+
+</html>
