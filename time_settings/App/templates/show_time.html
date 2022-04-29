@@ -9,14 +9,31 @@
 <body>
 
     {% block content %}
-    <div class="container">
-        {% for d in raiting_all %}
-            Отдел - {{d.raiting_key}},
-            Общее количество часов - {{d.total_count}}
-            <br>
-        {% endfor %}
-    {% endblock content %}
+    <h3>Время работы</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Сотрудник</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Проработанное время</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in time %}
+            <tr>
+                <th scope="row">{{t.id}}</th>
+                <td>{{t.time_key}}</td>
+                <td>{{t.date_work}}</td>
+                <td>{{t.time_work}}</td>
+            </tr>
 
-</body>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% endblock content %}
+</body> 
 
 </html>

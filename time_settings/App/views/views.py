@@ -1,3 +1,4 @@
+from time import time
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -176,7 +177,8 @@ def raiting(request):
             temp = 0.0
             for t in times:
                 temp += int(t.time_work)
-                print(t.time_work)
+                # print(t.time_work)
+            print(temp)
             if not Raiting.objects.filter(raiting_key=d).exists():
                 rait = Raiting.objects.create(
                     raiting_key = d,
@@ -185,9 +187,12 @@ def raiting(request):
             else:
                 rai = Raiting.objects.get(raiting_key=d)
                 rai.total_count = temp
+                print('else')
                 rai.save()
+                print(f"rai total = {rai.total_count}, rai - {rai}")
 
     raiting_all = Raiting.objects.all()
+    print(raiting_all)
     c = {
         'departments' : departments,
         'raiting_all' : raiting_all,
@@ -332,5 +337,10 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
 
 def get_time_all(request, id):
     project = Project.objects.get(id=id)
-    print(project)
-    return render(request, 'show_time.html')
+    employees = project.project_user_key.all()
+
+    c = {
+        'project' : project,
+        'time' : Time.objects.filter(time_key__in=employees)
+    }
+    return render(request, 'show_time.html', c)
