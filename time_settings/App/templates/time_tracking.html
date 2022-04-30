@@ -4,6 +4,7 @@
 
 {% block extracss %}
   <link href="{% static 'calender/main.css' %}" rel="stylesheet" />
+  <script src="{% static 'calender/main.js' %}"></script>
 {% endblock extracss %}
 
 
@@ -73,7 +74,6 @@
 {% endblock content %}
 
 {% block extrascripts %}
-  <script src="{% static 'calender/main.js' %}"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
