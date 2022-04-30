@@ -17,6 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from app.views.views import *
 from app.views.api_views import *
+from rest_framework_swagger.views import get_swagger_view
+from rest_framework import permissions
+schema_view = get_swagger_view(
+        title='TimeTrace API',
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +32,5 @@ urlpatterns = [
     path('api/task', TaskList.as_view()),
     path('api/department', DepartmentList.as_view()),
     path('api/raiting', RaitingList.as_view()),
-
+    path('api-swagger/', schema_view),
 ]
