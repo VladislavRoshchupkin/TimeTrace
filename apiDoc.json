@@ -1,0 +1,57 @@
+{
+  "swagger": "2.0",
+  "info": { "title": "TimeTrace API", "description": "", "version": "" },
+  "host": "127.0.0.1:8000",
+  "schemes": ["http"],
+  "paths": {
+    "/api-swagger/": {
+      "get": {
+        "operationId": "list",
+        "responses": { "200": { "description": "" } },
+        "parameters": [],
+        "tags": ["api-swagger"]
+      }
+    },
+    "/api/department": {
+      "get": {
+        "operationId": "department_list",
+        "responses": { "200": { "description": "" } },
+        "parameters": [],
+        "tags": ["api"]
+      }
+    },
+    "/api/project": {
+      "get": {
+        "operationId": "project_list",
+        "responses": { "200": { "description": "" } },
+        "parameters": [],
+        "tags": ["api"]
+      }
+    },
+    "/api/raiting": {
+      "get": {
+        "operationId": "raiting_list",
+        "responses": { "200": { "description": "" } },
+        "parameters": [],
+        "tags": ["api"]
+      }
+    },
+    "/api/task": {
+      "get": {
+        "operationId": "task_list",
+        "responses": { "200": { "description": "" } },
+        "parameters": [],
+        "tags": ["api"]
+      }
+    },
+    "/api/time": {
+      "get": {
+        "operationId": "time_list",
+        "responses": { "200": { "description": "" } },
+        "parameters": [],
+        "tags": ["api"]
+      }
+    }
+  },
+  "securityDefinitions": { "basic": { "type": "basic" } }
+}
