@@ -24,6 +24,7 @@ class ProjectAddedForms(forms.ModelForm):
         model = Project
         fields = [
             'project_user_key',
+            'manager_key',
             'project_name',
             'project_description',
             'start_date',
