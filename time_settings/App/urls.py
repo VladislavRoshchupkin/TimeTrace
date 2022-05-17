@@ -33,4 +33,8 @@ urlpatterns = [
     path('task/<int:id>/edit', tasks.edit_task, name='edit_task'),
     # Удаления задачи
     path('task/<int:id>/delete_task', tasks.delete_task, name='delete_task'),
+
+    # Добавление выходного
+    path('add_weekend/<int:id>/', add_weekend, name='add_weekend'),
+
 ]

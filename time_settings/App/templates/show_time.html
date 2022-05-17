@@ -9,23 +9,23 @@
 <body>
 
     {% block content %}
-    <h3>Время работы</h3>
+    <h3>Участники проекта</h3>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Сотрудник</th>
-                <th scope="col">Дата</th>
-                <th scope="col">Проработанное время</th>
+                <th scope="col">Имя сотрудника</th>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Отчество</th>
             </tr>
         </thead>
         <tbody>
-            {% for t in time %}
+            {% for t in employees %}
             <tr>
                 <th scope="row">{{t.id}}</th>
-                <td>{{t.time_key}}</td>
-                <td>{{t.date_work}}</td>
-                <td>{{t.time_work}}</td>
+                <td>{{t.employee_surname}}</td>
+                <td>{{t.employee_name}}</td>
+                <td>{{t.employee_patronymic}}</td>
             </tr>
 
             {% endfor %}

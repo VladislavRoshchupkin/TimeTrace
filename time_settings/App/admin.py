@@ -40,6 +40,7 @@ class TaskAdmin(admin.ModelAdmin):
         'start_date_task',
         'end_date_task',
         'completed',
+        'status_task',
     ]
 
 

@@ -23,6 +23,7 @@
                     <th scope="col">Предполагаемое начало выполнения</th>
                     <th scope="col">Предполагаемый конец выполнения</th>
                     <th scope="col">Действия</th>
+                    <th scope="col">Статус</th>
                     <th scope="col">Учет</th>
                 </tr>
             </thead>
@@ -47,7 +48,7 @@
         
                 <!-- if task.completed -->
                     <!-- <td>Задача выполнена</td> -->
-                        
+                    <td>{{task.status_task}}</td>
                     <td><a class="btn btn-primary" href="{% url 'time_tracking' task.id %}" role="button">Учет времени</a></td>
               
                 {% endfor %}

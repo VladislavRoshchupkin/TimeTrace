@@ -18,6 +18,12 @@ class EmployeeAddedForms(forms.ModelForm):
             'employee_patronymic',
         ]
 
+class WeekendAddedForms(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = [
+            'weekend_count',
+        ]
 
 class ProjectAddedForms(forms.ModelForm):
     class Meta:
@@ -42,7 +48,11 @@ class TaskAddedForms(forms.ModelForm):
             'task_description',
             'start_date_task',
             'end_date_task',
+            'status_task',
         ]
+        # widgets = {
+        #     'status_task': forms.Select(attrs={'class': 'custom-select md-form'}),
+        # }
        
 class TimeAddForms(forms.ModelForm):
     class Meta:

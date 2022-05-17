@@ -165,37 +165,62 @@ def time_tracking(request, id):
 
 
 def raiting(request):
-    departments = Department.objects.all()
-    employee = Employee.objects.filter(department_key__in=departments)
+    employee = Employee.objects.get(user_key=request.user)
+    department = employee.department_key
+    
+    print(department)
+    times = Time.objects.filter(time_key=employee)
 
-    times = Time.objects.filter(time_key__in=employee)
 
-    for d in departments:
-        employee = Employee.objects.filter(department_key=d)
-        for e in employee:
-            times = Time.objects.filter(time_key=e)
-            temp = 0.0
-            for t in times:
-                temp += int(t.time_work)
-                # print(t.time_work)
-            print(temp)
-            if not Raiting.objects.filter(raiting_key=d).exists():
+    current_department = Department.objects.get(department_name=department)
+
+    all_employees = Employee.objects.filter(department_key=current_department)
+    
+    for e in all_employees:
+        time = Time.objects.filter(time_key=e)
+        temp = 0.0
+        print(f"time = {time}")
+        for t in times:
+            temp += int(t.time_work)
+            if not Raiting.objects.filter(raiting_key=current_department).exists():
                 rait = Raiting.objects.create(
-                    raiting_key = d,
+                    raiting_key = current_department,
                     total_count = temp
                 )
             else:
-                rai = Raiting.objects.get(raiting_key=d)
+                rai = Raiting.objects.get(raiting_key=current_department)
+                
                 rai.total_count = temp
-                print('else')
                 rai.save()
                 print(f"rai total = {rai.total_count}, rai - {rai}")
 
-    raiting_all = Raiting.objects.all()
-    print(raiting_all)
+
+    # for d in departments:
+    #     employee = Employee.objects.filter(department_key=d)
+    #     for e in employee:
+    #         times = Time.objects.filter(time_key=e)
+    #         temp = 0.0
+    #         for t in times:
+    #             temp += int(t.time_work)
+    #             # print(t.time_work)
+    #         print(temp)
+    #         if not Raiting.objects.filter(raiting_key=d).exists():
+    #             rait = Raiting.objects.create(
+    #                 raiting_key = d,
+    #                 total_count = temp
+    #             )
+    #         else:
+    #             rai = Raiting.objects.get(raiting_key=d)
+    #             rai.total_count = temp
+    #             print('else')
+    #             rai.save()
+                # print(f"rai total = {rai.total_count}, rai - {rai}")
+
+    # raiting_all = Raiting.objects.all()
+    # print(raiting_all)
     c = {
-        'departments' : departments,
-        'raiting_all' : raiting_all,
+        'departments' : department,
+        'raiting_all' : Raiting.objects.get(raiting_key=current_department),
     }
     return render(request, 'raiting.html', c)
     
@@ -338,9 +363,26 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
 def get_time_all(request, id):
     project = Project.objects.get(id=id)
     employees = project.project_user_key.all()
-
     c = {
         'project' : project,
-        'time' : Time.objects.filter(time_key__in=employees)
+        'time' : Time.objects.filter(time_key__in=employees),
+        'employees' : employees
     }
     return render(request, 'show_time.html', c)
+
+def add_weekend(request, id):
+    employee = Employee.objects.get(id=id)
+    
+    if request.method == 'POST':
+        form = WeekendAddedForms(request.POST, instance=employee)
+        if form.is_valid():
+            employee.weekend_count = int(form.cleaned_data['weekend_count'])
+            employee.save()
+            return redirect(reverse('profile'))
+    else:
+        form = WeekendAddedForms(instance=employee)
+
+    context = {
+        'form' : form
+    }
+    return render(request, 'add_weekends.html', context)
