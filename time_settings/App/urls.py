@@ -36,5 +36,7 @@ urlpatterns = [
 
     # Добавление выходного
     path('add_weekend/<int:id>/', add_weekend, name='add_weekend'),
+    
+    path('change_time_work/<int:id>/', change_time_work, name='change_time_work'),
 
 ]

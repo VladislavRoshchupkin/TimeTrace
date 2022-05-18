@@ -76,6 +76,11 @@ class Project(models.Model):
 
 class Task(models.Model):
     """ Класс задач """
+    STATUS = [
+         ('Сделано', 'Сделано'),
+         ('В работе', 'В работе'),
+         ('Не сделано', 'Не сделано'),
+    ]
     task_key = models.ForeignKey(Project, on_delete=models.CASCADE, \
         verbose_name='Какому проекту принадлежит задача')
     employee_key = models.ManyToManyField(Employee, \
@@ -84,8 +89,8 @@ class Task(models.Model):
     task_description = models.TextField(max_length=250, verbose_name='Содержмое задачи')
     start_date_task = models.DateTimeField(verbose_name='Предполагаемое начало выполнения')
     end_date_task = models.DateTimeField(verbose_name='Предполагаемый конец выполнения')
-    completed = models.BooleanField(default=False, verbose_name='Статус выполненной задачи')
-    
+    status_task = models.CharField(max_length=50, choices=STATUS, verbose_name='Статус выполнения')
+
     class Meta:
         verbose_name = 'задачу'
         verbose_name_plural = 'Задачи'

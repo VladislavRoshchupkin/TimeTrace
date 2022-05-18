@@ -25,6 +25,14 @@ class WeekendAddedForms(forms.ModelForm):
             'weekend_count',
         ]
 
+
+class ChangeTimeForms(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = [
+            'status_task',
+        ]
+
 class ProjectAddedForms(forms.ModelForm):
     class Meta:
         model = Project
@@ -48,7 +56,7 @@ class TaskAddedForms(forms.ModelForm):
             'task_description',
             'start_date_task',
             'end_date_task',
-            'status_task',
+            # 'status_task',
         ]
         # widgets = {
         #     'status_task': forms.Select(attrs={'class': 'custom-select md-form'}),

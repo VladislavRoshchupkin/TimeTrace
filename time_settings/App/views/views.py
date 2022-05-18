@@ -77,8 +77,7 @@ def profile(request):
     projects = Project.objects.filter(project_user_key=employee)
     dep = Department.objects.get(department_name=str(employee.department_key))
 
-    if str(employee.position_key) == 'Менеджер':
-        print('Пользователь менеджер')
+  
     all_time = Time.objects.filter(time_key=employee)
     my_all_time = 0.0
 
@@ -148,7 +147,6 @@ def time_tracking(request, id):
                 description=form.cleaned_data['description'],
                 time_work=form.cleaned_data['time_work'],
             )
-            task.completed = True
             task.save()
             time.save()
             return redirect(reverse('time_tracking', args=[id]))
@@ -168,7 +166,6 @@ def raiting(request):
     employee = Employee.objects.get(user_key=request.user)
     department = employee.department_key
     
-    print(department)
     times = Time.objects.filter(time_key=employee)
 
 
@@ -179,7 +176,6 @@ def raiting(request):
     for e in all_employees:
         time = Time.objects.filter(time_key=e)
         temp = 0.0
-        print(f"time = {time}")
         for t in times:
             temp += int(t.time_work)
             if not Raiting.objects.filter(raiting_key=current_department).exists():
@@ -192,7 +188,6 @@ def raiting(request):
                 
                 rai.total_count = temp
                 rai.save()
-                print(f"rai total = {rai.total_count}, rai - {rai}")
 
 
     # for d in departments:
@@ -309,7 +304,6 @@ def create_event(request):
                 date_work=form.cleaned_data['date_work'],
                 time_work=form.cleaned_data['time_work'],
             )
-        task.completed = True
         task.save()
         time.save()
         return redirect(reverse('profile'))
@@ -326,7 +320,6 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
     template_name = "time_tracking.html"
     form_class = TimeAddForms
     def get(self, request, *args, **kwargs):
-        print('getff')
         employee = Employee.objects.get(user_key=request.user)
         forms = self.form_class()
         events = Time.objects.filter(time_key=employee)
@@ -386,3 +379,24 @@ def add_weekend(request, id):
         'form' : form
     }
     return render(request, 'add_weekends.html', context)
+
+
+def change_time_work(request, id):
+    """ Изменение времени работы незашедшему пользователю """
+    task = Task.objects.get(id=id)
+    
+    if request.method == 'POST':
+        form = ChangeTimeForms(request.POST, instance=task)
+        if form.is_valid():
+            # employee.weekend_count = int(form.cleaned_data['weekend_count'])
+            # employee.save()
+            task.status_task = form.cleaned_data['status_task']
+            task.save()
+            return redirect(reverse('get_tasks_for_employee', args=[task.task_key.id]))
+    else:
+        form = ChangeTimeForms(instance=task)
+
+    context = {
+        'form' : form
+    }
+    return render(request, 'change_time_work.html', context)

@@ -13,7 +13,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'task_description',
             'start_date_task',
             'end_date_task',
-            'completed',
         ]
 
 
