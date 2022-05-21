@@ -21,7 +21,7 @@ import calendar
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
-
+from django.conf import settings
 
 from ..models import Time
 from ..utils import Calendar
@@ -61,18 +61,24 @@ def get_tasks_for_employee(request, id_project):
     d = {}
     for k, v in enumerate(times):
         d[k] = v
-
-    c = {
-        'tasks' : tasks,
+    if request.user.is_superuser:
+        c = {
+        'tasks' : Task.objects.all(),
         'project_name' : project.project_name,
         'times' : d
     }
+    else:
+        c = {
+            'tasks' : tasks,
+            'project_name' : project.project_name,
+            'times' : d
+        }
     return render(request, 'tasks.html', c)
 
 
 @login_required(login_url='login')
 def profile(request):
-    is_superuser = request.user.is_superuser or request.user.is_staff
+    is_super = request.user.is_superuser or request.user.is_staff
     employee = Employee.objects.get(user_key=request.user)
     projects = Project.objects.filter(project_user_key=employee)
     dep = Department.objects.get(department_name=str(employee.department_key))
@@ -90,20 +96,28 @@ def profile(request):
     #     rai.total_count = my_all_time
     #     rai.save()
 
-    if is_superuser:
+    if request.user.is_superuser:
         c = {
-            'employee' : Employee.objects.all(),
+            'employee' : Employee.objects.all().exclude(user_key=True),
+            'profile_info' : Employee.objects.get(user_key=request.user),
+            'projects' : Project.objects.all(),
+            'position' : employee.position_key,
+            'is_superuser' : is_super
+        }
+    elif request.user.is_staff:
+        c = {
+            'employee' : Employee.objects.all().exclude(user_key=True),
             'profile_info' : Employee.objects.get(user_key=request.user),
             'projects' : projects,
             'position' : employee.position_key,
-            'is_superuser' : is_superuser
+            'is_superuser' : is_super
         }
     else:
         c = {
             'profile_info' : Employee.objects.get(user_key=request.user),
             'projects' : projects,
             'position' : employee.position_key,
-            'is_superuser' : is_superuser
+            'is_superuser' : is_super
         }
     return render(request, 'profile.html', c)
 
@@ -190,29 +204,6 @@ def raiting(request):
                 rai.save()
 
 
-    # for d in departments:
-    #     employee = Employee.objects.filter(department_key=d)
-    #     for e in employee:
-    #         times = Time.objects.filter(time_key=e)
-    #         temp = 0.0
-    #         for t in times:
-    #             temp += int(t.time_work)
-    #             # print(t.time_work)
-    #         print(temp)
-    #         if not Raiting.objects.filter(raiting_key=d).exists():
-    #             rait = Raiting.objects.create(
-    #                 raiting_key = d,
-    #                 total_count = temp
-    #             )
-    #         else:
-    #             rai = Raiting.objects.get(raiting_key=d)
-    #             rai.total_count = temp
-    #             print('else')
-    #             rai.save()
-                # print(f"rai total = {rai.total_count}, rai - {rai}")
-
-    # raiting_all = Raiting.objects.all()
-    # print(raiting_all)
     c = {
         'departments' : department,
         'raiting_all' : Raiting.objects.get(raiting_key=current_department),
@@ -356,11 +347,23 @@ class CalendarViewNew(LoginRequiredMixin, generic.View):
 
 def get_time_all(request, id):
     project = Project.objects.get(id=id)
-    employees = project.project_user_key.all()
+    current_employee = Employee.objects.get(user_key=request.user)
+
+    # if request.user.is_superuser:
+    #     employees = project.project_user_key.all()
+    # elif request.user.is_staff:
+    #     employees = project.project_user_key.all().exclude(user_key=request.user)
+    # else:
+  
+    employees = project.project_user_key.all().exclude(user_key=request.user) # .exclude(user_key=request.user)
+    
+    
+    print(current_employee)
     c = {
         'project' : project,
         'time' : Time.objects.filter(time_key__in=employees),
-        'employees' : employees
+        'employees' : employees,
+        'current_employee' : current_employee,
     }
     return render(request, 'show_time.html', c)
 
