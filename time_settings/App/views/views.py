@@ -216,6 +216,7 @@ def raiting(request):
     c = {
         'departments' : department,
         'raiting_all' : Raiting.objects.get(raiting_key=current_department),
+        'all_employees' : all_employees
     }
     return render(request, 'raiting.html', c)
     
@@ -400,3 +401,4 @@ def change_time_work(request, id):
         'form' : form
     }
     return render(request, 'change_time_work.html', context)
+
