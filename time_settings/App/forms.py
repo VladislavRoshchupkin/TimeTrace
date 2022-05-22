@@ -47,7 +47,19 @@ class ProjectAddedForms(forms.ModelForm):
             'start_date',
             'end_date',
         ]
+        widgets = {
+            'project_user_key': forms.CheckboxSelectMultiple
+        }
        
+class ProjectEditFormsForNotAdmin(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = [
+            'project_user_key',
+            'manager_key',
+            'project_name',
+            'project_description',
+        ]
 
 class TaskAddedForms(forms.ModelForm):
     class Meta:
@@ -64,6 +76,9 @@ class TaskAddedForms(forms.ModelForm):
         # widgets = {
         #     'status_task': forms.Select(attrs={'class': 'custom-select md-form'}),
         # }
+        widgets = {
+            'employee_key': forms.CheckboxSelectMultiple
+        }
        
 class TimeAddForms(forms.ModelForm):
     class Meta:
@@ -74,8 +89,14 @@ class TimeAddForms(forms.ModelForm):
             'date_work',
             'time_work',
         ]
+        widgets = {
+            'time_work': forms.NumberInput(attrs={'min': 0, 'max' : 24}),
+        }
        
 class EditUserForms(forms.ModelForm):
+    email = forms.EmailField()
+    username = forms.CharField()
+    password = forms.CharField(min_length=8, widget=forms.PasswordInput)
     class Meta:
         model = Employee
         fields = [
@@ -85,6 +106,9 @@ class EditUserForms(forms.ModelForm):
         ]
        
 class EditUserAdminForms(forms.ModelForm):
+    email = forms.EmailField()
+    username = forms.CharField()
+    password = forms.CharField(min_length=8, widget=forms.PasswordInput)
     class Meta:
         model = Employee
         fields = '__all__'

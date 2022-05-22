@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from statistics import mode
 from django.db import models
 from django.contrib.auth.models import User
@@ -36,6 +37,8 @@ class Position(models.Model):
 
 class Employee(models.Model):
     """ Класс сотрудника """
+    def upload(instance, filename):
+        return f'{instance.user_key.username}/{filename}'
     user_key = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='К какому User относится')
     
     department_key = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name='К какому отделу относится')
@@ -44,7 +47,7 @@ class Employee(models.Model):
     employee_surname= models.CharField(max_length=30, verbose_name='Фамилия')
     employee_name = models.CharField(max_length=20, verbose_name='Имя')
     employee_patronymic= models.CharField(max_length=30, verbose_name='Отчество')
-    # photo = models.ImageField(verbose_name='Фотография')
+    photo = models.ImageField(upload_to=upload, default = 'default.png', verbose_name='Фотография')
     weekend_count = models.IntegerField(verbose_name='Количество выходных', blank=True, default=0)
     
     class Meta:

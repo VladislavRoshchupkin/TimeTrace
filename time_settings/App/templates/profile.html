@@ -19,7 +19,6 @@
         Вы - {{position}}
         <br>
 
-
         <br>
         <h3>Информация:</h3>
         <li>Отдел - {{profile_info.department_key}}</li>
@@ -28,6 +27,8 @@
         <li>Имя - {{profile_info.employee_name}}</li>
         <li>Отчество - {{profile_info.employee_patronymic}}</li>
         <li>Количество выходных - {{profile_info.weekend_count}}</li>
+
+        <li>Фото - <img src="{{profile_info.photo.url}}" height="250"  alt="альтернативный текст"></li>
         <h3>Мои проекты:</h3>
 
 
@@ -76,7 +77,6 @@
             </tbody>
         </table>
 
-        {% if is_superuser %}
         <h3>Сотрудники:</h3>
         <table class="table">
             <thead>
@@ -95,19 +95,24 @@
                 {% for em in employee %}
                 <tr>
                     <th scope="row">{{em.id}}</th>
-                    <td>{{em.user_key}}</td>
+                    <td>
+                        {% if request.user.is_superuser  %}
+                            <a href="{% url 'edit_user' em.id %}">{{em.user_key}}</a>
+                        {% else %}
+                            {{em.user_key}}
+                        {% endif %}
+                    </td>
                     <td>{{em.department_key}}</td>
                     <td>{{em.employee_surname}}</td>
                     <td>{{em.employee_name}}</td>
                     <td>{{em.employee_patronymic}}</td>  
                     <td>{{em.department_key}}</td>  
-                    <td>{{em.weekend_count}}</td>  
+                    <td>{{em.weekend_count}}</td>
                 </tr>
 
                 {% endfor %}
             </tbody>
         </table>
-        {% endif %}
     </div>
 
 

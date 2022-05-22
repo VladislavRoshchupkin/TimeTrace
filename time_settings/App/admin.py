@@ -9,6 +9,7 @@ class DepartmentAdmin(admin.ModelAdmin):
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = [
         'id',
+        'photo',
         'user_key',
         'position_key',
         'department_key',

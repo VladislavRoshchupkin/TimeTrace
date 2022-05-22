@@ -11,7 +11,7 @@ import calendar
 from datetime import datetime
 from ..utils import Calendar
 import datetime
-
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.views import generic
@@ -63,7 +63,7 @@ def get_tasks_for_employee(request, id_project):
         d[k] = v
     if request.user.is_superuser:
         c = {
-        'tasks' : Task.objects.all(),
+        'tasks' : tasks,
         'project_name' : project.project_name,
         'times' : d
     }
@@ -87,9 +87,9 @@ def profile(request):
     all_time = Time.objects.filter(time_key=employee)
     my_all_time = 0.0
 
-    for at in all_time:
-        my_all_time += int(at.time_work)
-    
+    # for at in all_time:
+    #     my_all_time += int(at.time_work)
+    # print(my_all_time)
     # if my_all_time != Raiting.objects.get(raiting_key=dep).total_count:
     #     print("выполняю")
     #     rai = Raiting.objects.get(raiting_key=dep)
@@ -114,6 +114,7 @@ def profile(request):
         }
     else:
         c = {
+            'employee' : Employee.objects.filter(department_key=dep),
             'profile_info' : Employee.objects.get(user_key=request.user),
             'projects' : projects,
             'position' : employee.position_key,
@@ -182,33 +183,77 @@ def raiting(request):
     
     times = Time.objects.filter(time_key=employee)
 
-
     current_department = Department.objects.get(department_name=department)
 
     all_employees = Employee.objects.filter(department_key=current_department)
     
+    times_in_employee = []
+    temp = 0.0
+    d = {}
+    d_superuser = {}
+
     for e in all_employees:
         time = Time.objects.filter(time_key=e)
-        temp = 0.0
-        for t in times:
+        time_current = 0
+        for t in time:
             temp += int(t.time_work)
-            if not Raiting.objects.filter(raiting_key=current_department).exists():
-                rait = Raiting.objects.create(
-                    raiting_key = current_department,
-                    total_count = temp
-                )
-            else:
-                rai = Raiting.objects.get(raiting_key=current_department)
+            time_current += int(t.time_work) # добавляю время для каждого пользователя
+        
+
+        if not Raiting.objects.filter(raiting_key=current_department).exists():
+            rait = Raiting.objects.create(
+                raiting_key = current_department,
+                total_count = temp
+            )
+        else:
+            rai = Raiting.objects.get(raiting_key=current_department)
+            rai.total_count = temp
+            rai.save()
+        times_in_employee.append(time_current)
+        d[e] = time_current
+
+    if request.user.is_superuser:
+        department = Department.objects.all()
+
+        for dep in department:
+            employee = Employee.objects.filter(department_key=dep)
+            for e in employee:
+                time = Time.objects.filter(time_key=e)
+                time_current = 0
+                for t in time:
+                    temp += int(t.time_work)
+                    time_current += int(t.time_work) # добавляю время для каждого пользователя
                 
-                rai.total_count = temp
-                rai.save()
+                if not Raiting.objects.filter(raiting_key=current_department).exists():
+                    rait = Raiting.objects.create(
+                        raiting_key = current_department,
+                        total_count = temp
+                    )
+                else:
+                    rai = Raiting.objects.get(raiting_key=current_department)
+                    rai.total_count = temp
+                    rai.save()
+                times_in_employee.append(time_current)
+                d_superuser[dep] = employee
 
 
-    c = {
-        'departments' : department,
-        'raiting_all' : Raiting.objects.get(raiting_key=current_department),
-        'all_employees' : all_employees
-    }
+
+    if request.user.is_superuser:
+        c = {
+        'departments' : Department.objects.all(),
+        'raiting_all' : Raiting.objects.all(),
+        'all_employees' : all_employees,
+        'times_in_employee' : times_in_employee,
+        'time_for_employees' : d_superuser
+        }
+    else:
+        c = {
+            'departments' : department,
+            'raiting_all' : Raiting.objects.get(raiting_key=current_department),
+            'all_employees' : all_employees,
+            'times_in_employee' : times_in_employee,
+            'time_for_employees' : d
+        }
     return render(request, 'raiting.html', c)
     
 
@@ -224,11 +269,19 @@ def edit_user(request, id):
         form = model(request.POST, instance=edit_user)
         if form.is_valid():
             # note = form.save(commit=False)
+            user_instance = User.objects.get(username=edit_user.user_key.username)
             edit_user.employee_surname = form.cleaned_data['employee_surname']
             edit_user.employee_name = form.cleaned_data['employee_name']
             edit_user.employee_patronymic = form.cleaned_data['employee_patronymic']
             edit_user.user_key = request.user
+        
+            user_instance.email=form.cleaned_data['email']
+            user_instance.username=form.cleaned_data['username']
+            user_instance.password=make_password(form.cleaned_data['password'])
+            user_instance.save()
             edit_user.save()
+            
+            print()
             return redirect('profile')
     else:
         form = model(instance=edit_user)

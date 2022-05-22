@@ -13,8 +13,9 @@
         <form action="" method="POST">
             {% csrf_token %}
             <label for="">К каким сотрудникам принадлежит</label>
-            {{ form.project_user_key }}
-            <br>
+            <div style="width:350px;height:250px;line-height:1em;overflow:scroll;padding:1px;">
+                {{ form.project_user_key }}
+            </div>
 
 
 
@@ -30,7 +31,7 @@
             <br>
 
 
-
+            {% if request.user.is_superuser %}
             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                 <label for="">Дата начала</label>
                 {{ form.start_date }}
@@ -46,6 +47,7 @@
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
             </div>
+            {% endif %}
             <button type="submit">Сохранить</button>
         </form>
     {% endblock content %}

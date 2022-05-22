@@ -10,10 +10,41 @@
 
     {% block content %}
     <div class="container">
-        Отдел - {{raiting_all.raiting_key}},
-        Общее количество часов - {{raiting_all.total_count}}
-        <br>
+    
 
+    {% if request.user.is_superuser %}
+        
+       
+    {% for k, v in time_for_employees.items %}
+        Общее количество часов - {{raiting_all.total_count}}
+        Сотрудники отдела {{k}}:
+       
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Имя сотрудника</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Отчество</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for val in v  %}
+                    <tr>
+                        <th scope="row">{{val.id}}</th>
+                        <td>{{val.employee_surname}}</td>
+                        <td>{{val.employee_name}}</td>
+                        <td>{{val.employee_patronymic}}</td>
+                    </tr>
+                {% endfor  %}
+            </tbody>
+        </table>
+        {% endfor %}
+
+    {% else %}
+    Отдел - {{raiting_all.raiting_key}},
+    Общее количество часов - {{raiting_all.total_count}}
+    <br>
     Сотрудники моего отдела:
     <table class="table">
         <thead>
@@ -22,20 +53,25 @@
                 <th scope="col">Имя сотрудника</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Отчество</th>
+                <th scope="col">Проработанное количество часов(всего)</th>
             </tr>
         </thead>
         <tbody>
-            {% for t in all_employees %}
+            {% for k, v in time_for_employees.items %}
             <tr>
-                <th scope="row">{{t.id}}</th>
-                <td>{{t.employee_surname}}</td>
-                <td>{{t.employee_name}}</td>
-                <td>{{t.employee_patronymic}}</td>
+                <th scope="row">{{k.id}}</th>
+                <td>{{k.employee_surname}}</td>
+                <td>{{k.employee_name}}</td>
+                <td>{{k.employee_patronymic}}</td>
+                <td>{{v}}</td>
             </tr>
 
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
+
+    
     {% endblock content %}
     </div>
 </body>

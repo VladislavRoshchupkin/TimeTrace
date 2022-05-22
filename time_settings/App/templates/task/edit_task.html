@@ -17,7 +17,9 @@
             <br>
     
             <label for="">Какому сотруднику принадлежит задача</label>
-            {{ form.employee_key }}
+            <div style="width:350px;height:250px;line-height:1em;overflow:scroll;padding:1px;">
+                {{ form.employee_key }}
+            </div>
             <br>
             <label for="">Название задачи</label>
             {{ form.task_name }}

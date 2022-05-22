@@ -1,6 +1,9 @@
 from django.urls import path
 from .views.views import *
 from .views.admin import employees, projects, tasks
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
     path('', index, name='index'),
@@ -39,4 +42,4 @@ urlpatterns = [
     
     path('change_time_work/<int:id>/', change_time_work, name='change_time_work'),
 
-]
+] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
