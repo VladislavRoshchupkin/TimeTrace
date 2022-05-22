@@ -22,6 +22,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.conf import settings
+from notifications.signals import notify
 
 from ..models import Time
 from ..utils import Calendar
@@ -96,13 +97,17 @@ def profile(request):
     #     rai.total_count = my_all_time
     #     rai.save()
 
+    # request.user.notifications.mark_all_as_read()
+    print(request.user.notifications.unread())
+    
+
     if request.user.is_superuser:
         c = {
             'employee' : Employee.objects.all().exclude(user_key=True),
             'profile_info' : Employee.objects.get(user_key=request.user),
             'projects' : Project.objects.all(),
             'position' : employee.position_key,
-            'is_superuser' : is_super
+            'is_superuser' : is_super,
         }
     elif request.user.is_staff:
         c = {
@@ -441,7 +446,7 @@ def add_weekend(request, id):
 def change_time_work(request, id):
     """ Изменение времени работы незашедшему пользователю """
     task = Task.objects.get(id=id)
-    
+    user_instance = User.objects.get(username=task.task_key.manager_key.user_key.username)
     if request.method == 'POST':
         form = ChangeTimeForms(request.POST, instance=task)
         if form.is_valid():
@@ -449,6 +454,8 @@ def change_time_work(request, id):
             # employee.save()
             task.status_task = form.cleaned_data['status_task']
             task.save()
+            notify.send(sender=request.user, recipient=user_instance, verb=   
+            f"Задача {task.task_name} у пользователя {request.user} изменила статус на '{task.status_task}'")
             return redirect(reverse('get_tasks_for_employee', args=[task.task_key.id]))
     else:
         form = ChangeTimeForms(instance=task)
@@ -458,3 +465,10 @@ def change_time_work(request, id):
     }
     return render(request, 'change_time_work.html', context)
 
+def unread_notifications(request):
+    current_user_notifications = request.user.notifications.unread()
+
+    context = {
+        'current_user_notifications' : current_user_notifications,
+    }
+    return render(request, 'unread_notif.html', context)

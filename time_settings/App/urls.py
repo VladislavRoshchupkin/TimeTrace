@@ -42,4 +42,6 @@ urlpatterns = [
     
     path('change_time_work/<int:id>/', change_time_work, name='change_time_work'),
 
+    path('unread_notifications/', unread_notifications, name='unread_notifications')
+
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
