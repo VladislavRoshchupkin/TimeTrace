@@ -24,6 +24,9 @@ class WeekendAddedForms(forms.ModelForm):
         fields = [
             'weekend_count',
         ]
+        widgets = {
+            'weekend_count': forms.NumberInput(attrs={'min': 0, 'max' : 365}),
+        }
 
 
 class ChangeTimeForms(forms.ModelForm):
@@ -85,3 +88,6 @@ class EditUserAdminForms(forms.ModelForm):
     class Meta:
         model = Employee
         fields = '__all__'
+        widgets = {
+            'weekend_count': forms.NumberInput(attrs={'min': 0, 'max' : 365}),
+        }

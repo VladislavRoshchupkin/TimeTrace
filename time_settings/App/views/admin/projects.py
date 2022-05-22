@@ -18,6 +18,7 @@ def add_project(request):
             # print(f"form.cleaned_data['project_user_key'] = {form.cleaned_data['project_user_key']}")
             project = Project.objects.create(
                 # project_user_key = form.cleaned_data['project_user_key'],
+                manager_key=form.cleaned_data['manager_key'],
                 project_name=form.cleaned_data['project_name'],
                 project_description=form.cleaned_data['project_description'],
                 start_date=form.cleaned_data['start_date'],
@@ -25,7 +26,7 @@ def add_project(request):
             )
 
             project.save()
-            project.project_user_key.set(form.cleaned_data['project_user_key'])
+            # project.project_user_key.set(form.cleaned_data['project_user_key'])
             return redirect(reverse('profile'))
         else:
             pass
