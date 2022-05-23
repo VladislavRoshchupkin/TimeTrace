@@ -20,25 +20,22 @@
     {% block content %}
 
     <div class="container">
-        
+        <img src="{{profile_info.photo.url}}" height="100" width="100">
         привет! {{user.username}}
         Вы - {{position}}
         <br>
 
         <br>
-        <h3>Информация:</h3>
+        <!-- <h3>Информация:</h3>
         <li>Отдел - {{profile_info.department_key}}</li>
         <li>Должность - {{profile_info.position_key}}</li>
         <li>Фамилия - {{profile_info.employee_surname}}</li>
         <li>Имя - {{profile_info.employee_name}}</li>
         <li>Отчество - {{profile_info.employee_patronymic}}</li>
-        <li>Количество выходных - {{profile_info.weekend_count}}</li>
+        <li>Количество выходных - {{profile_info.weekend_count}}</li> -->
 
-        <li>Фото - <img src="{{profile_info.photo.url}}" height="250" ></li>
+        
         <h3>Мои проекты:</h3>
-
-
-
         <table class="table">
             <thead>
                 <tr>

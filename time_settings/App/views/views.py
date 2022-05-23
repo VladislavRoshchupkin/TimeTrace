@@ -219,9 +219,10 @@ def raiting(request):
 
     if request.user.is_superuser:
         department = Department.objects.all()
-
+        
         for dep in department:
             employee = Employee.objects.filter(department_key=dep)
+            times_in_employee = []
             for e in employee:
                 time = Time.objects.filter(time_key=e)
                 time_current = 0
@@ -241,8 +242,6 @@ def raiting(request):
                 times_in_employee.append(time_current)
                 d_superuser[dep] = employee
 
-
-
     if request.user.is_superuser:
         c = {
         'departments' : Department.objects.all(),
@@ -253,11 +252,11 @@ def raiting(request):
         }
     else:
         c = {
-            'departments' : department,
-            'raiting_all' : Raiting.objects.get(raiting_key=current_department),
-            'all_employees' : all_employees,
-            'times_in_employee' : times_in_employee,
-            'time_for_employees' : d
+        'departments' : department,
+        'raiting_all' : Raiting.objects.get(raiting_key=current_department),
+        'all_employees' : all_employees,
+        'times_in_employee' : times_in_employee,
+        'time_for_employees' : d
         }
     return render(request, 'raiting.html', c)
     

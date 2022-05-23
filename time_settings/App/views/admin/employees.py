@@ -17,14 +17,20 @@ def add_employee(request):
         if form.is_valid():
             if str(form.cleaned_data['position_key']) == 'Менеджер':
                 staff = True
+                superuser = False
+            elif str(form.cleaned_data['position_key']) == 'Админ':
+                staff = True
+                superuser = True
             else:
                 staff = False
+                superuser = False
                 
             user = User.objects.create(
                 username=form.cleaned_data['username'],
                 email=form.cleaned_data['email'],
                 password=make_password(form.cleaned_data['password']),
                 is_staff=staff,
+                is_superuser=superuser,
             )
             # is_staff
             emp = Employee.objects.create(
