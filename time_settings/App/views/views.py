@@ -219,7 +219,6 @@ def raiting(request):
 
     if request.user.is_superuser:
         department = Department.objects.all()
-        
         for dep in department:
             employee = Employee.objects.filter(department_key=dep)
             times_in_employee = []
@@ -270,15 +269,15 @@ def edit_user(request, id):
         model = EditUserForms
 
     if request.method == 'POST':
-        form = model(request.POST, instance=edit_user)
+        form = model(request.POST, request.FILES, instance=edit_user)
         if form.is_valid():
             # note = form.save(commit=False)
             user_instance = User.objects.get(username=edit_user.user_key.username)
             edit_user.employee_surname = form.cleaned_data['employee_surname']
             edit_user.employee_name = form.cleaned_data['employee_name']
             edit_user.employee_patronymic = form.cleaned_data['employee_patronymic']
-            edit_user.user_key = request.user
-        
+            edit_user.user_key = form.cleaned_data['user_key']
+            
             user_instance.email=form.cleaned_data['email']
             user_instance.username=form.cleaned_data['username']
             user_instance.password=make_password(form.cleaned_data['password'])
@@ -471,3 +470,13 @@ def unread_notifications(request):
         'current_user_notifications' : current_user_notifications,
     }
     return render(request, 'unread_notif.html', context)
+
+def profile_page(request, id):
+    current_user = User.objects.get(id=id)
+    profile_page = Employee.objects.get(user_key=current_user)
+    current_employee_id = profile_page.id
+    context = {
+        'profile_page' : profile_page,
+        'current_employee_id' : current_employee_id
+    }
+    return render(request, 'profile_page.html', context)

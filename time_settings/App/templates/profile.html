@@ -20,9 +20,6 @@
     {% block content %}
 
     <div class="container">
-        <img src="{{profile_info.photo.url}}" height="100" width="100">
-        привет! {{user.username}}
-        Вы - {{position}}
         <br>
 
         <br>
@@ -97,13 +94,9 @@
             <tbody>
                 {% for em in employee %}
                 <tr>
-                    <th scope="row">{{em.id}}</th>
+                    <th scope="row">{{em.user_key.id}}</th>
                     <td>
-                        {% if request.user.is_superuser  %}
-                            <a href="{% url 'edit_user' em.id %}">{{em.user_key}}</a>
-                        {% else %}
-                            {{em.user_key}}
-                        {% endif %}
+                        <a href="{% url 'profile_page' em.user_key.id %}">{{em.user_key}}</a>
                     </td>
                     <td>{{em.department_key}}</td>
                     <td>{{em.employee_surname}}</td>
