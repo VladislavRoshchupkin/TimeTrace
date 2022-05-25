@@ -94,6 +94,7 @@ class Task(models.Model):
     end_date_task = models.DateTimeField(verbose_name='Предполагаемый конец выполнения')
     status_task = models.CharField(max_length=50, choices=STATUS, verbose_name='Статус выполнения')
 
+
     class Meta:
         verbose_name = 'задачу'
         verbose_name_plural = 'Задачи'

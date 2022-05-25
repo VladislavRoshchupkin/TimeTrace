@@ -20,9 +20,7 @@
 
 
         <br>
-        {{profile_page.user_key.id}}
-        {{request.user.id}}
-        {% if request.user.id == profile_page.user_key.id %}
+        {% if request.user.is_superuser or request.user.id == profile_page.user_key.id %}
             <a href="{% url 'edit_user' profile_page.id %}">редактировать</a>
         {% endif %}
         {% endblock content %}

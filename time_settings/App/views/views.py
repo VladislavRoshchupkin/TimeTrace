@@ -64,7 +64,7 @@ def get_tasks_for_employee(request, id_project):
         d[k] = v
     if request.user.is_superuser:
         c = {
-        'tasks' : tasks,
+        'tasks' : Task.objects.all(),
         'project_name' : project.project_name,
         'times' : d
     }
@@ -465,7 +465,9 @@ def change_time_work(request, id):
 
 def unread_notifications(request):
     current_user_notifications = request.user.notifications.unread()
-
+    if request.method == "POST":
+        request.user.notifications.mark_all_as_read()
+        return redirect(reverse('profile'))
     context = {
         'current_user_notifications' : current_user_notifications,
     }
