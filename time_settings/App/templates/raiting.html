@@ -26,15 +26,17 @@
                     <th scope="col">Имя сотрудника</th>
                     <th scope="col">Фамилия</th>
                     <th scope="col">Отчество</th>
+                    <th scope="col">Часы</th>
                 </tr>
             </thead>
             <tbody>
-                {% for val in v  %}
+                {% for key, value in v.items  %}
                     <tr>
-                        <th scope="row">{{val.id}}</th>
-                        <td>{{val.employee_surname}}</td>
-                        <td>{{val.employee_name}}</td>
-                        <td>{{val.employee_patronymic}}</td>
+                        <th scope="row">{{key.id}}</th>
+                        <td>{{key.employee_surname}}</td>
+                        <td>{{key.employee_name}}</td>
+                        <td>{{key.employee_patronymic}}</td>
+                        <td>{{value}}</td>
                     </tr>
                 {% endfor  %}
             </tbody>

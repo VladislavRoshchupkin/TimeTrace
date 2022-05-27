@@ -219,7 +219,9 @@ def raiting(request):
 
     if request.user.is_superuser:
         department = Department.objects.all()
+        
         for dep in department:
+            d_inner = {}
             employee = Employee.objects.filter(department_key=dep)
             times_in_employee = []
             for e in employee:
@@ -239,7 +241,11 @@ def raiting(request):
                     rai.total_count = temp
                     rai.save()
                 times_in_employee.append(time_current)
-                d_superuser[dep] = employee
+            for i in range(employee.count()):
+                d_inner[employee[i]] = times_in_employee[i]
+            # d_inner[employee] = times_in_employee
+            d_superuser[dep] = d_inner
+            print(d_superuser)
 
     if request.user.is_superuser:
         c = {
