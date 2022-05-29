@@ -110,6 +110,13 @@
       
                     </ul>
                 </li>
+
+                <li>
+                    <form class="form-inline my-2 my-lg-0" action="{% url 'search_url' %}">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Введите для поиска" aria-label="Найти" name="q">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Найти</button>
+                      </form>
+                </li>
                 
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Выйти</a>

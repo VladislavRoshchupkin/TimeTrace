@@ -24,10 +24,11 @@ from django.urls import reverse_lazy, reverse
 from django.conf import settings
 from notifications.signals import notify
 
-from ..models import Time
+from ..models import *
 from ..utils import Calendar
 from ..forms import TimeAddForms
 
+from django.db.models import Q 
 
 
 def index(request):
@@ -488,3 +489,15 @@ def profile_page(request, id):
         'current_employee_id' : current_employee_id
     }
     return render(request, 'profile_page.html', context)
+
+def search_querys(request):
+    search_result = request.GET.get('q')
+    if search_result:
+        s_query = Project.objects.filter(
+            Q(project_name__icontains=search_result) |
+            Q(project_description__icontains=search_result)
+        )
+        context = {
+            'query' : s_query
+        }
+    return render(request, 'search_results.html', context)

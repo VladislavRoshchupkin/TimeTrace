@@ -44,6 +44,8 @@ urlpatterns = [
 
     path('unread_notifications/', unread_notifications, name='unread_notifications'),
 
-    path('profile_page/<int:id>', profile_page, name='profile_page')
+    path('profile_page/<int:id>', profile_page, name='profile_page'),
+
+    path('search/', search_querys, name='search_url')
 
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
