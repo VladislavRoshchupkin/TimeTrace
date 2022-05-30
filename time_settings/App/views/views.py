@@ -1,4 +1,5 @@
 from time import time
+from unittest import result
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -497,7 +498,13 @@ def search_querys(request):
             Q(project_name__icontains=search_result) |
             Q(project_description__icontains=search_result)
         )
+        s_query_task = Task.objects.filter(
+            Q(task_name__icontains=search_result) |
+            Q(task_description__icontains=search_result)
+        )
+        result_query = [s_query, s_query_task]
         context = {
-            'query' : s_query
+            'query' : s_query,
+            'query_task' : s_query_task
         }
     return render(request, 'search_results.html', context)

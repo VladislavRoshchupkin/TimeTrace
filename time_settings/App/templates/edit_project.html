@@ -14,7 +14,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             {{form|crispy}}
-            <button type="submit">Сохранить</button>
+            <input class="btn btn-primary" type="submit" value="Сохранить">
         </form>
     {% endblock content %}
 

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Event Calendar{% endblock title %}
+{% block title %}Учет рабочего времени{% endblock title %}
 
 {% block extracss %}
   <link href="{% static 'calender/main.css' %}" rel="stylesheet" />
@@ -41,13 +41,13 @@ adasda - {{events}}
                                 </div>
                             </div>
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">End Date:</label>
+                                    <label for="message-text" class="col-form-label">Конец:</label>
                                     {{ form.time_work }}
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="modalClose2" type="button" class="btn btn-danger">Close</button>
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button id="modalClose2" type="button" class="btn btn-danger">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
                             </div>
                         </form>
                     </div>
