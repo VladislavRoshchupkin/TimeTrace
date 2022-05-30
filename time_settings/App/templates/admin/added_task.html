@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,49 +18,7 @@
         <form action="" method="POST">
             {% csrf_token %}
 
-            <label for="">Какому проекту принадлежит</label>
-            {{ form.task_key }}
-            <br>
-
-
-            <label for="">Каким сотрудникам принадлежит</label>
-            {{ form.employee_key }}
-            <br>
-            
-            <label for="">Название задачи</label>
-            {{ form.task_name }}
-            <br>
-
-            <label for="">Описание задачи</label>
-            {{ form.task_description }}
-            <br>
-
-
-
-            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                {{ form.start_date_task }}
-                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-
-            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                {{ form.end_date_task }}
-                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-
-            <script>
-                $(function () {
-                    $("#datetimepicker1").datetimepicker({
-                        format: 'YYYY-MM-DD HH:mm',
-                    });
-                    $("#datetimepicker2").datetimepicker({
-                        format: 'YYYY-MM-DD HH:mm',
-                    });
-                });
-            </script>
+            {{form|crispy}}
             <button type="submit">Добавить</button>
         </form>
     </div>

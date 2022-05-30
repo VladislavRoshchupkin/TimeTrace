@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,42 +13,7 @@
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
-            <label for="">К каким сотрудникам принадлежит</label>
-            <div style="width:350px;height:250px;line-height:1em;overflow:scroll;padding:1px;">
-                {{ form.project_user_key }}
-            </div>
-
-
-
-            <label for="">manager key</label>
-            {{ form.manager_key }}
-            <br>
-    
-            <label for="">НАзвание проекта</label>
-            {{ form.project_name }}
-            <br>
-            <label for="">Описание проекта</label>
-            {{ form.project_description }}
-            <br>
-
-
-            {% if request.user.is_superuser %}
-            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                <label for="">Дата начала</label>
-                {{ form.start_date }}
-                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-
-            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                <label for="">Дата завершения</label>
-                {{ form.end_date }}
-                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-            {% endif %}
+            {{form|crispy}}
             <button type="submit">Сохранить</button>
         </form>
     {% endblock content %}

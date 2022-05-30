@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     #'rest_framework_swagger',
     'drf_yasg',
     'notifications',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -169,3 +170,4 @@ SWAGGER_SETTINGS = {
     },
     'LOGOUT_URL' : '/logout/'
 }
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

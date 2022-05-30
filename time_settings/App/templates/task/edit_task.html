@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,42 +13,9 @@
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
-            <label for="">Какому проекту принадлежит задача</label>
-            {{ form.task_key }}
-            <br>
-    
-            <label for="">Какому сотруднику принадлежит задача</label>
-            <div style="width:350px;height:250px;line-height:1em;overflow:scroll;padding:1px;">
-                {{ form.employee_key }}
-            </div>
-            <br>
-            <label for="">Название задачи</label>
-            {{ form.task_name }}
-            <br>
-
-            <label for="">Описание задачи</label>
-            {{ form.task_description }}
-            <br>
-
-            
-
-
-            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                <label for="">Дата начала</label>
-                {{ form.start_date_task }}
-                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-
-            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                <label for="">Дата завершения</label>
-                {{ form.end_date_task }}
-                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
+            {{form|crispy}}
             <button type="submit">Сохранить</button>
+            
         </form>
     {% endblock content %}
 

@@ -48,7 +48,9 @@ class ProjectAddedForms(forms.ModelForm):
             'end_date',
         ]
         widgets = {
-            'project_user_key': forms.CheckboxSelectMultiple
+            'project_user_key': forms.CheckboxSelectMultiple,
+            'start_date' : forms.TextInput(attrs={'type': 'date'}),
+            'end_date' : forms.TextInput(attrs={'type': 'date'}),
         }
        
 class ProjectEditFormsForNotAdmin(forms.ModelForm):
@@ -60,6 +62,10 @@ class ProjectEditFormsForNotAdmin(forms.ModelForm):
             'project_name',
             'project_description',
         ]
+        widgets = {
+            'project_user_key': forms.CheckboxSelectMultiple,
+        }
+
 
 class TaskAddedForms(forms.ModelForm):
     class Meta:
@@ -77,7 +83,9 @@ class TaskAddedForms(forms.ModelForm):
         #     'status_task': forms.Select(attrs={'class': 'custom-select md-form'}),
         # }
         widgets = {
-            'employee_key': forms.CheckboxSelectMultiple
+            'employee_key': forms.CheckboxSelectMultiple,
+            'start_date_task' : forms.TextInput(attrs={'type': 'date'}),
+            'end_date_task' : forms.TextInput(attrs={'type': 'date'}),
         }
        
 class TimeAddForms(forms.ModelForm):

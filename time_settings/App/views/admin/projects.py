@@ -45,6 +45,7 @@ def edit_project(request, id):
         ModelForm = ProjectAddedForms
     else:
         ModelForm = ProjectEditFormsForNotAdmin
+    print(ModelForm)
     context = {}
     project = Project.objects.get(id=id)
     if request.method == 'POST':
@@ -53,7 +54,6 @@ def edit_project(request, id):
             project.project_name=form.cleaned_data['project_name']
             project.project_description=form.cleaned_data['project_description']
             if request.user.is_superuser:
-
                 project.start_date=str(form.cleaned_data['start_date'])
                 project.end_date=str(form.cleaned_data['end_date'])
             project.project_user_key.set(form.cleaned_data['project_user_key'])
@@ -63,7 +63,7 @@ def edit_project(request, id):
             pass
     else:
         # added_employee.html
-        form = ProjectAddedForms(instance=project)
+        form = ModelForm(instance=project)
     c = {
         'form' : form
     }
