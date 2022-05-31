@@ -13,10 +13,9 @@ from app.forms import *
 
 def add_project(request):
     context = {}
-    if request.user.is_superuser:
-        ModelForm = ProjectAddedFormsForAdmin
-    else:
-        ModelForm = ProjectAddedForms
+
+    ModelForm = ProjectAddedFormsForAdmin
+
     if request.method == 'POST':
  
         form = ModelForm(request.POST)
