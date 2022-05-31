@@ -288,14 +288,21 @@ def edit_user(request, id):
         if form.is_valid():
             # note = form.save(commit=False)
             user_instance = User.objects.get(username=edit_user.user_key.username)
-            edit_user.employee_surname = form.cleaned_data['employee_surname']
-            edit_user.employee_name = form.cleaned_data['employee_name']
-            edit_user.employee_patronymic = form.cleaned_data['employee_patronymic']
-            edit_user.user_key = form.cleaned_data['user_key']
-            
-            user_instance.email=form.cleaned_data['email']
-            user_instance.username=form.cleaned_data['username']
-            user_instance.password=make_password(form.cleaned_data['password'])
+            if request.user.is_superuser:
+                edit_user.employee_surname = form.cleaned_data['employee_surname']
+                edit_user.employee_name = form.cleaned_data['employee_name']
+                edit_user.employee_patronymic = form.cleaned_data['employee_patronymic']
+                edit_user.user_key = form.cleaned_data['user_key']
+                
+                user_instance.email=form.cleaned_data['email']
+                user_instance.username=form.cleaned_data['username']
+                user_instance.password=make_password(form.cleaned_data['password'])
+            else:
+                edit_user.employee_surname = form.cleaned_data['employee_surname']
+                edit_user.employee_name = form.cleaned_data['employee_name']
+                edit_user.employee_patronymic = form.cleaned_data['employee_patronymic']
+                user_instance.email=form.cleaned_data['email']
+
             user_instance.save()
             edit_user.save()
             

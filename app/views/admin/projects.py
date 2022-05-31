@@ -13,8 +13,13 @@ from app.forms import *
 
 def add_project(request):
     context = {}
+    if request.user.is_superuser:
+        ModelForm = ProjectAddedFormsForAdmin
+    else:
+        ModelForm = ProjectAddedForms
     if request.method == 'POST':
-        form = ProjectAddedForms(request.POST)
+ 
+        form = ModelForm(request.POST)
         if form.is_valid():
             # print(f"form.cleaned_data['project_user_key'] = {form.cleaned_data['project_user_key']}")
             project = Project.objects.create(
@@ -27,13 +32,13 @@ def add_project(request):
             )
 
             project.save()
-            project.project_user_key.set(form.cleaned_data['project_user_key'])
+            # project.project_user_key.set(form.cleaned_data['project_user_key'])
             return redirect(reverse('profile'))
         else:
             pass
     else:
         # added_employee.html
-        form = ProjectAddedForms()
+        form = ModelForm()
     c = {
         'form' : form
     }
@@ -45,18 +50,19 @@ def edit_project(request, id):
         ModelForm = ProjectAddedForms
     else:
         ModelForm = ProjectEditFormsForNotAdmin
-    print(ModelForm)
     context = {}
     project = Project.objects.get(id=id)
     if request.method == 'POST':
         form = ModelForm(request.POST, instance=project)
         if form.is_valid():
-            project.project_name=form.cleaned_data['project_name']
-            project.project_description=form.cleaned_data['project_description']
+            
             if request.user.is_superuser:
                 project.start_date=str(form.cleaned_data['start_date'])
                 project.end_date=str(form.cleaned_data['end_date'])
-            project.project_user_key.set(form.cleaned_data['project_user_key'])
+                project.project_name=form.cleaned_data['project_name']
+                project.project_description=form.cleaned_data['project_description']
+            if request.user.is_staff:
+                project.project_user_key.set(form.cleaned_data['project_user_key'])
             project.save()
             return redirect(reverse('profile'))
         else:

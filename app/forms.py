@@ -52,6 +52,22 @@ class ProjectAddedForms(forms.ModelForm):
             'start_date' : forms.TextInput(attrs={'type': 'date'}),
             'end_date' : forms.TextInput(attrs={'type': 'date'}),
         }
+
+class ProjectAddedFormsForAdmin(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = [
+            'manager_key',
+            'project_name',
+            'project_description',
+            'start_date',
+            'end_date',
+        ]
+        widgets = {
+            'project_user_key': forms.CheckboxSelectMultiple,
+            'start_date' : forms.TextInput(attrs={'type': 'date'}),
+            'end_date' : forms.TextInput(attrs={'type': 'date'}),
+        }
        
 class ProjectEditFormsForNotAdmin(forms.ModelForm):
     class Meta:
@@ -61,6 +77,16 @@ class ProjectEditFormsForNotAdmin(forms.ModelForm):
             'manager_key',
             'project_name',
             'project_description',
+        ]
+        widgets = {
+            'project_user_key': forms.CheckboxSelectMultiple,
+        }
+
+class ProjectEditFormsForNotAdmin(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = [
+            'project_user_key',
         ]
         widgets = {
             'project_user_key': forms.CheckboxSelectMultiple,
@@ -103,8 +129,6 @@ class TimeAddForms(forms.ModelForm):
        
 class EditUserForms(forms.ModelForm):
     email = forms.EmailField()
-    username = forms.CharField()
-    password = forms.CharField(min_length=8, widget=forms.PasswordInput)
     class Meta:
         model = Employee
         fields = [
@@ -119,7 +143,11 @@ class EditUserAdminForms(forms.ModelForm):
     password = forms.CharField(min_length=8, widget=forms.PasswordInput)
     class Meta:
         model = Employee
-        fields = '__all__'
-        widgets = {
-            'weekend_count': forms.NumberInput(attrs={'min': 0, 'max' : 365}),
-        }
+        fields = [
+            'user_key',
+            'department_key',
+            'employee_surname',
+            'employee_name',
+            'employee_patronymic',
+            'weekend_count',
+        ]

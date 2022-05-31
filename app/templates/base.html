@@ -99,6 +99,7 @@
 
 
                 <li class="nav-item dropdown">
+                    {% if request.user.is_superuser or request.user.is_staff %}
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Оповещения {% live_notify_badge %}
@@ -107,8 +108,8 @@
                         <a href="{% url 'unread_notifications' %}">
                             {% live_notify_list %}
                         </a>
-      
                     </ul>
+                    {% endif %}
                 </li>
 
                 <li>
