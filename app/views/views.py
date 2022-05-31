@@ -195,7 +195,6 @@ def raiting(request):
     all_employees = Employee.objects.filter(department_key=current_department)
     
     times_in_employee = []
-    temp = 0.0
     d = {}
     d_superuser = {}
 
@@ -203,25 +202,24 @@ def raiting(request):
         time = Time.objects.filter(time_key=e)
         time_current = 0
         for t in time:
-            temp += int(t.time_work)
             time_current += int(t.time_work) # добавляю время для каждого пользователя
         
 
         if not Raiting.objects.filter(raiting_key=current_department).exists():
             rait = Raiting.objects.create(
                 raiting_key = current_department,
-                total_count = temp
+                total_count = time_current
             )
         else:
+            times_in_employee.append(time_current)
             rai = Raiting.objects.get(raiting_key=current_department)
-            rai.total_count = temp
-            rai.save()
-        times_in_employee.append(time_current)
+            rai.total_count = sum(times_in_employee)
+        rai.save()
         d[e] = time_current
 
     if request.user.is_superuser:
         department = Department.objects.all()
-        
+        all_time = []
         for dep in department:
             d_inner = {}
             employee = Employee.objects.filter(department_key=dep)
@@ -230,24 +228,32 @@ def raiting(request):
                 time = Time.objects.filter(time_key=e)
                 time_current = 0
                 for t in time:
-                    temp += int(t.time_work)
                     time_current += int(t.time_work) # добавляю время для каждого пользователя
                 
-                if not Raiting.objects.filter(raiting_key=current_department).exists():
+                if not Raiting.objects.filter(raiting_key=dep).exists():
                     rait = Raiting.objects.create(
-                        raiting_key = current_department,
-                        total_count = temp
+                        raiting_key = dep,
+                        total_count = time_current
                     )
                 else:
-                    rai = Raiting.objects.get(raiting_key=current_department)
-                    rai.total_count = temp
-                    rai.save()
-                times_in_employee.append(time_current)
+                    times_in_employee.append(time_current)
+                    rai = Raiting.objects.get(raiting_key=dep)
+                    rai.total_count = sum(times_in_employee)
+                rai.save()
+                
+            
             for i in range(employee.count()):
                 d_inner[employee[i]] = times_in_employee[i]
+            
             # d_inner[employee] = times_in_employee
+            
+            all_time.append(sum(times_in_employee))
+            
+            
+            for i in range(len(all_time)):
+                d_inner['times'] = all_time[i]
             d_superuser[dep] = d_inner
-            print(d_superuser)
+        
 
     if request.user.is_superuser:
         c = {
@@ -255,7 +261,8 @@ def raiting(request):
         'raiting_all' : Raiting.objects.all(),
         'all_employees' : all_employees,
         'times_in_employee' : times_in_employee,
-        'time_for_employees' : d_superuser
+        'time_for_employees' : d_superuser,
+        'counts' : all_time,
         }
     else:
         c = {

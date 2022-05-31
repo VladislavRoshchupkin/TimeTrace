@@ -42,7 +42,7 @@
                     <th scope="col">Содержимое</th>
                     <th scope="col">Предполагаемое начало выполнения</th>
                     <th scope="col">Предполагаемый конец выполнения</th>
-                    {% if request.user.is_superuser or request.user.is_staff  %}
+                    {% if request.user.is_superuser %}
                     <th scope="col">Действия</th>
                     {% endif %}
                     <th scope="col">Участники</th>
@@ -62,10 +62,6 @@
                             <a href="{% url 'edit_project' pr.id %}">Изменить</a> |
                             <a href="{% url 'delete_project' pr.id %}">Удалить</a>
                             
-                        </td>
-                    {% elif request.user.is_staff %}
-                        <td>
-                            <a href="{% url 'edit_project' pr.id %}">Изменить</a>
                         </td>
 
                     {% endif %}
