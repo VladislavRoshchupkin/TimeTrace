@@ -69,13 +69,13 @@
                     <a class="nav-link" href="/">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile_page' request.user.id %}">Профиль</a>
+                    <a class="nav-link" href="{% url 'profile_page' request.user.id %}">Личный кабинет</a>
                 </li>
                 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Функции
+                        Опции
                     </a>
                     {% if request.user.is_superuser %}
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -108,7 +108,7 @@
                     {% if request.user.is_superuser or request.user.is_staff %}
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Оповещения {% live_notify_badge %}
+                        Уведомления {% live_notify_badge %}
                     </a>
                     <ul class="dropdown-menu" id="notice-link">
                         <a href="{% url 'unread_notifications' %}">

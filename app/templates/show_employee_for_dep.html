@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Изменить проект{% endblock title %}</title>
+</head>
+
+<body>
+
+    {% block content %}
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">К какому User относится</th>
+                    <th scope="col">К какому отделу относится</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Отдел</th>
+                    <th scope="col">Выходные</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for em in employees %}
+                <tr>
+                    <th scope="row">{{em.user_key.id}}</th>
+                    <td>
+                        <a href="{% url 'profile_page' em.user_key.id %}">{{em.user_key}}</a>
+                    </td>
+                    <td>{{em.department_key}}</td>
+                    <td>{{em.employee_surname}}</td>
+                    <td>{{em.employee_name}}</td>
+                    <td>{{em.employee_patronymic}}</td>
+                    <td>{{em.department_key}}</td>
+                    <td>{{em.weekend_count}}</td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock content %}
+
+</body>
+
+</html>

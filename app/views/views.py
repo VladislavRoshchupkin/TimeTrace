@@ -86,7 +86,7 @@ def profile(request):
     employee = Employee.objects.get(user_key=request.user)
     projects = Project.objects.filter(project_user_key=employee)
     dep = Department.objects.get(department_name=str(employee.department_key))
-
+    all_departments = Department.objects.all()
   
     all_time = Time.objects.filter(time_key=employee)
     my_all_time = 0.0
@@ -101,9 +101,7 @@ def profile(request):
     #     rai.save()
 
     # request.user.notifications.mark_all_as_read()
-    print(request.user.notifications.unread())
     
-
     if request.user.is_superuser:
         c = {
             'employee' : Employee.objects.all().exclude(user_key=True),
@@ -111,6 +109,7 @@ def profile(request):
             'projects' : Project.objects.all(),
             'position' : employee.position_key,
             'is_superuser' : is_super,
+            'all_departments' : all_departments,
         }
     elif request.user.is_staff:
         c = {
@@ -118,7 +117,8 @@ def profile(request):
             'profile_info' : Employee.objects.get(user_key=request.user),
             'projects' : projects,
             'position' : employee.position_key,
-            'is_superuser' : is_super
+            'is_superuser' : is_super,
+            'all_departments' : all_departments,
         }
     else:
         c = {
@@ -577,3 +577,13 @@ def raiting_page(request, id):
     }
 
     return render(request, 'raiting_page.html', c)
+
+
+def show_employee_for_dep(request, id):
+    department = Department.objects.get(id=id)
+    
+    employees = Employee.objects.filter(department_key=department)
+    c = {
+        'employees' : employees
+    }
+    return render(request, 'show_employee_for_dep.html', c)

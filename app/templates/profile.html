@@ -31,7 +31,7 @@
         <li>Отчество - {{profile_info.employee_patronymic}}</li>
         <li>Количество выходных - {{profile_info.weekend_count}}</li> -->
 
-        
+
         <h3>Мои проекты:</h3>
         <table class="table">
             <thead>
@@ -58,16 +58,16 @@
                     <td>{{pr.start_date}}</td>
                     <td>{{pr.end_date}}</td>
                     {% if request.user.is_superuser %}
-                        <td>
-                            <a href="{% url 'edit_project' pr.id %}">Изменить</a> |
-                            <a href="{% url 'delete_project' pr.id %}">Удалить</a>
-                            
-                        </td>
+                    <td>
+                        <a href="{% url 'edit_project' pr.id %}">Изменить</a> |
+                        <a href="{% url 'delete_project' pr.id %}">Удалить</a>
+
+                    </td>
                     {% endif %}
                     {% if request.user.is_staff and not request.user.is_superuser %}
-                        <td>
-                            <a href="{% url 'edit_project' pr.id %}">Изменить</a> 
-                        </td>
+                    <td>
+                        <a href="{% url 'edit_project' pr.id %}">Изменить</a>
+                    </td>
                     {% endif %}
 
                     <td><a href="{% url 'get_time_all' pr.id %}">Участники</a></td>
@@ -78,6 +78,15 @@
             </tbody>
         </table>
 
+       
+        {% if request.user.is_superuser or request.user.is_staff %}
+        <h3>Отделы:</h3>
+        <div class="container">
+            {% for d in all_departments %}
+                <a href="{% url 'show_employee_for_dep' d.id %}">{{d.department_name}}</a>
+            {% endfor %}
+        </div>
+        {% else %}
         <h3>Сотрудники:</h3>
         <table class="table">
             <thead>
@@ -102,14 +111,16 @@
                     <td>{{em.department_key}}</td>
                     <td>{{em.employee_surname}}</td>
                     <td>{{em.employee_name}}</td>
-                    <td>{{em.employee_patronymic}}</td>  
-                    <td>{{em.department_key}}</td>  
+                    <td>{{em.employee_patronymic}}</td>
+                    <td>{{em.department_key}}</td>
                     <td>{{em.weekend_count}}</td>
                 </tr>
 
                 {% endfor %}
             </tbody>
         </table>
+        {% endif %}
+
     </div>
 
 

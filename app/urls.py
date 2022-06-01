@@ -23,9 +23,10 @@ urlpatterns = [
     path('add_project/', projects.add_project, name='add_project'),
     path('add_task/', tasks.add_task, name='add_task'),
     path('raiting/', raiting, name='raiting'),
-    path('raitin/', raiting_demo, name='raiting_demo'),
+    path('raiting_for_admin/', raiting_demo, name='raiting_demo'),
     path('raiting_page/<int:id>/', raiting_page, name='raiting_page'),
-
+    path('show_employee_for_dep/<int:id>/', show_employee_for_dep, name='show_employee_for_dep'),
+    
     # Изменение профиля
     path('profile/edit/<int:id>', edit_user, name='edit_user'),
 
