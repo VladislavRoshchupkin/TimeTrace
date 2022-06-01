@@ -31,7 +31,7 @@ def add_project(request):
             )
 
             project.save()
-            # project.project_user_key.set(form.cleaned_data['project_user_key'])
+            project.project_user_key.set(form.cleaned_data['project_user_key'])
             return redirect(reverse('profile'))
         else:
             pass
