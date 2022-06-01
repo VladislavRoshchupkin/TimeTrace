@@ -24,6 +24,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.conf import settings
 from notifications.signals import notify
+from django.db.models import Sum
 
 from ..models import *
 from ..utils import Calendar
@@ -216,6 +217,7 @@ def raiting(request):
             rai.total_count = sum(times_in_employee)
         rai.save()
         d[e] = time_current
+    d = dict(sorted(d.items(), key=lambda x: x[1], reverse= True))
 
     if request.user.is_superuser:
         department = Department.objects.all()
@@ -253,7 +255,8 @@ def raiting(request):
             for i in range(len(all_time)):
                 d_inner['times'] = all_time[i]
             d_superuser[dep] = d_inner
-        
+            print(d_superuser)
+
 
     if request.user.is_superuser:
         c = {
@@ -522,3 +525,55 @@ def search_querys(request):
             'query_task' : s_query_task
         }
     return render(request, 'search_results.html', context)
+
+
+def raiting_demo(request):
+    departments = Department.objects.all()
+
+    c = {
+        'departments' : departments,
+    }
+    return render(request, 'select_department.html', c)
+
+
+def raiting_page(request, id):
+    department = Department.objects.get(id=id)
+    raiting = Raiting.objects.filter(raiting_key=department).order_by('total_count')
+    employees = Employee.objects.filter(department_key=department)
+    times = Time.objects.filter(time_key__in=employees).order_by('-time_work')
+
+
+    times_in_employee = []
+    d = {}
+    d_superuser = {}
+
+    for e in employees:
+        time = Time.objects.filter(time_key=e)
+        time_current = 0
+        for t in time:
+            time_current += int(t.time_work) # добавляю время для каждого пользователя
+        
+
+        if not Raiting.objects.filter(raiting_key=department).exists():
+            rait = Raiting.objects.create(
+                raiting_key = department,
+                total_count = time_current
+            )
+        else:
+            times_in_employee.append(time_current)
+            rai = Raiting.objects.get(raiting_key=department)
+            rai.total_count = sum(times_in_employee)
+        rai.save()
+        d[e] = time_current
+    d = dict(sorted(d.items(), key=lambda x: x[1], reverse= True))
+
+    c = {
+        'raiting' : raiting,
+        'employees' : employees,
+        'department' : department,
+        'times_in_employee' : times_in_employee,
+        'time_for_employees' : d,
+        'raiting_all' : Raiting.objects.get(raiting_key=department)
+    }
+
+    return render(request, 'raiting_page.html', c)

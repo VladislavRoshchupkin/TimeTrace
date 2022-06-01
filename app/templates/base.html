@@ -80,7 +80,13 @@
                     {% if request.user.is_superuser %}
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'add_employee' %}" role="button">Добавить сотрудника</a>
+                        {% if request.user.is_superuser %}
+                        <a class="dropdown-item" href="{% url 'raiting_demo' %}" role="button">Рейтинг</a>
+
+                        {% else %}
                         <a class="dropdown-item" href="{% url 'raiting' %}" role="button">Рейтинг</a>
+                        {% endif %}
+
                         <a class="dropdown-item" href="{% url 'add_project' %}" role="button">Добавить Проект</a>
                         <a class="dropdown-item" href="{% url 'add_task' %}" role="button">Добавить Задачу</a>
                     </div>

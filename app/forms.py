@@ -152,3 +152,13 @@ class EditUserAdminForms(forms.ModelForm):
             'employee_patronymic',
             'weekend_count',
         ]
+       
+class SelectDepartments(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = [
+            'department_name',
+        ]
+        widgets = {
+            'department_name': forms.CheckboxSelectMultiple,
+        }

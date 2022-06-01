@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Изменить проект{% endblock title %}</title>
+</head>
+
+<body>
+
+    {% block content %}
+    <div class="container">
+
+        Отдел - {{department}},
+        Общее количество часов - {{raiting_all.total_count}}
+        <br>
+        Сотрудники моего отдела:
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Имя сотрудника</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Проработанное количество часов(всего)</th>
+                    <td>Действия</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for k, v in time_for_employees.items %}
+                <tr>
+                    <th scope="row">{{k.id}}</th>
+                    <td>{{k.employee_surname}}</td>
+                    <td>{{k.employee_name}}</td>
+                    <td>{{k.employee_patronymic}}</td>
+                    <td>{{v}}</td>
+                    <td><a href="{% url 'add_weekend' k.id %}">Добавить выходной</a></td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% endblock content %}
+
+</body>
+
+</html>
