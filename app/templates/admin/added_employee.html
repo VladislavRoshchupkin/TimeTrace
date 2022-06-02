@@ -2,27 +2,32 @@
 {% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     {% block content %}
-    
+
 
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
-            {{form|crispy }}
-            <input class="btn btn-primary" type="submit" value="Добавить">
+            <div class="form-group col-md-5">
+                {{form|crispy }}
+                <input class="btn btn-primary" type="submit" value="Добавить">
+            </div>
         </form>
     </div>
 
 
 
 
-    {% endblock content %}
+            {% endblock content %}
 </body>
+
 </html>

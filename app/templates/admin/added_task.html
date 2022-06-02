@@ -17,9 +17,10 @@
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
-
-            {{form|crispy}}
-            <input class="btn btn-primary" type="submit" value="Добавить">
+            <div class="form-group col-md-5">
+                {{form|crispy }}
+                <input class="btn btn-primary" type="submit" value="Добавить">
+            </div>
         </form>
     </div>
 

@@ -21,7 +21,7 @@
                     <th scope="col">Предполагаемое начало выполнения</th>
                     <th scope="col">Предполагаемый конец выполнения</th>
                     {% if request.user.is_superuser or request.user.is_staff %}
-                        <th scope="col">Статус</th>
+                    <th scope="col">Статус</th>
                     {% endif %}
                     <th scope="col">Действия</th>
                     <th scope="col">Учет</th>
@@ -34,19 +34,29 @@
                     <td>{{task.task_description}}</td>
                     <td>{{task.start_date_task}}</td>
                     <td>{{task.end_date_task}}</td>
-                    <td><a href="{% url 'change_time_work' task.id %}">Изменить статус</a> | <br></td>
+                    <td>
+                        <div class="btn-toolbar"><a href="{% url 'change_time_work' task.id %}"
+                                class="btn-sm btn-primary" role="button"
+                                style="text-align: left; padding-right:20px;">Изменить</a>
+                        </div>
+                    </td>
                     {% if request.user.is_superuser or request.user.is_staff %}
-                        <td>
-                            <a href="{% url 'edit_task' task.id %}">Изменить задачу</a> |
-                            <a href="{% url 'delete_task' task.id %}">Удалить</a>
-                        </td>
+                    <td>
+                        <div class="btn-toolbar">
+                            <a href="{% url 'edit_task' task.id %}" class="btn-sm btn-primary" role="button"
+                                style="text-align: left;margin-bottom:5px">Изменить</a>
+                            <a href="{% url 'delete_task' task.id %}" class="btn-sm btn-primary" role="button"
+                                style="text-align: left; padding-right:20px;">Удалить</a>
+                        </div>
+                    </td>
                     {% endif %}
 
                     <td>{{task.status_task}}</td>
-                    <td><a class="btn btn-primary" href="{% url 'time_tracking' task.id %}" role="button">Учет времени</a></td>
-              
-                {% endfor %}
-                
+                    <td><a class="btn btn-primary" href="{% url 'time_tracking' task.id %}" role="button">Учет
+                            времени</a></td>
+
+                    {% endfor %}
+
             </tbody>
         </table>
     </div>

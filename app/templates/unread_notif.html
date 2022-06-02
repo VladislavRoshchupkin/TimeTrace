@@ -32,12 +32,12 @@
         {% endfor %}
        
       
-        
+        <form method = "POST">
+            {% csrf_token %}
+            <input class="btn btn-primary" type="submit" value="Прочесть все">
+        <form>
     </ul>
-    <form method = "POST">
-        {% csrf_token %}
-        <input class="btn btn-primary" type="submit" value="Прочесть все">
-    <form>
+   
         {% else %}
         Уведомлений нет
         {% endif %}

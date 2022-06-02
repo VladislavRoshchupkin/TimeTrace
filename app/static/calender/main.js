@@ -4101,7 +4101,7 @@ var FullCalendar = (function (exports) {
         weekText: 'W',
         allDayText: 'all-day',
         moreLinkText: 'more',
-        noEventsText: 'No events to display',
+        noEventsText: 'Нет событий',
     };
     function organizeRawLocales(explicitRawLocales) {
         var defaultCode = explicitRawLocales.length > 0 ? explicitRawLocales[0].code : 'en';
@@ -5291,7 +5291,7 @@ var FullCalendar = (function (exports) {
         root: 'fc-theme-standard',
         tableCellShaded: 'fc-cell-shaded',
         buttonGroup: 'fc-button-group',
-        button: 'fc-button fc-button-primary',
+        button: 'fc-button fc-button-info',
         buttonActive: 'fc-button-active',
     };
     StandardTheme.prototype.baseIconClass = 'fc-icon';
@@ -13945,14 +13945,14 @@ var FullCalendar = (function (exports) {
                 slotDuration: '00:30:00',
                 slotEventOverlap: true, // a bad name. confused with overlap/constraint system
             },
-            timeGridDay: {
-                type: 'timeGrid',
-                duration: { days: 1 },
-            },
-            timeGridWeek: {
-                type: 'timeGrid',
-                duration: { weeks: 1 },
-            },
+            // timeGridDay: {
+            //     type: 'timeGrid',
+            //     duration: { days: 1 },
+            // },
+            // timeGridWeek: {
+            //     type: 'timeGrid',
+            //     duration: { weeks: 1 },
+            // },
         },
     });
 
@@ -13961,27 +13961,7 @@ var FullCalendar = (function (exports) {
         function ListViewHeaderRow() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        ListViewHeaderRow.prototype.render = function () {
-            var _a = this.props, dayDate = _a.dayDate, todayRange = _a.todayRange;
-            var _b = this.context, theme = _b.theme, dateEnv = _b.dateEnv, options = _b.options, viewApi = _b.viewApi;
-            var dayMeta = getDateMeta(dayDate, todayRange);
-            // will ever be falsy?
-            var text = options.listDayFormat ? dateEnv.format(dayDate, options.listDayFormat) : '';
-            // will ever be falsy? also, BAD NAME "alt"
-            var sideText = options.listDaySideFormat ? dateEnv.format(dayDate, options.listDaySideFormat) : '';
-            var navLinkData = options.navLinks
-                ? buildNavLinkData(dayDate)
-                : null;
-            var hookProps = __assign({ date: dateEnv.toDate(dayDate), view: viewApi, text: text,
-                sideText: sideText,
-                navLinkData: navLinkData }, dayMeta);
-            var classNames = ['fc-list-day'].concat(getDayClassNames(dayMeta, theme));
-            // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
-            return (createElement(RenderHook, { hookProps: hookProps, classNames: options.dayHeaderClassNames, content: options.dayHeaderContent, defaultContent: renderInnerContent, didMount: options.dayHeaderDidMount, willUnmount: options.dayHeaderWillUnmount }, function (rootElRef, customClassNames, innerElRef, innerContent) { return (createElement("tr", { ref: rootElRef, className: classNames.concat(customClassNames).join(' '), "data-date": formatDayString(dayDate) },
-                createElement("th", { colSpan: 3 },
-                    createElement("div", { className: 'fc-list-day-cushion ' + theme.getClass('tableCellShaded'), ref: innerElRef }, innerContent)))); }));
-        };
-        return ListViewHeaderRow;
+        
     }(BaseComponent));
     function renderInnerContent(props) {
         var navLinkAttrs = props.navLinkData // is there a type for this?

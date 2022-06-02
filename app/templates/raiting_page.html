@@ -13,7 +13,8 @@
     <div class="container">
         <br>
         <p class="font-weight-lighter" style="font-size: 1.2rem;">Общее количество часов:
-            <u>{{raiting_all.total_count}}</u></p>
+            <u>{{raiting_all.total_count}}</u>
+        </p>
 
         <p class="font-weight-lighter" style="margin-top:-10px; margin-bottom:-20px ; font-size: 1.2rem;">Сотрудники
             отдела {{department}}</p>
@@ -24,8 +25,8 @@
                     <th scope="col">Имя сотрудника</th>
                     <th scope="col">Фамилия</th>
                     <th scope="col">Отчество</th>
-                    <th scope="col">Проработанное количество часов(всего)</th>
-                    <td>Действия</td>
+                    <th scope="col" class="text-center">Проработанное количество часов(всего)</th>
+                    <td scope="col">Действия</td>
                 </tr>
             </thead>
             <tbody>
@@ -34,8 +35,9 @@
                     <td>{{k.employee_surname}}</td>
                     <td>{{k.employee_name}}</td>
                     <td>{{k.employee_patronymic}}</td>
-                    <td>{{v}}</td>
-                    <td><a href="{% url 'add_weekend' k.id %}">Добавить выходной</a></td>
+                    <td class="text-center">{{v}}</td>
+                    <td><a href="{% url 'add_weekend' k.id %}" class="btn btn-primary">Добавить выходной</a>
+                    </td>
                 </tr>
 
                 {% endfor %}
