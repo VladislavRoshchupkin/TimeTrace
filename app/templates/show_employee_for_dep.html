@@ -14,7 +14,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">К какому User относится</th>
                     <th scope="col">К какому отделу относится</th>
                     <th scope="col">Фамилия</th>
@@ -27,7 +26,6 @@
             <tbody>
                 {% for em in employees %}
                 <tr>
-                    <th scope="row">{{em.user_key.id}}</th>
                     <td>
                         <a href="{% url 'profile_page' em.user_key.id %}">{{em.user_key}}</a>
                     </td>

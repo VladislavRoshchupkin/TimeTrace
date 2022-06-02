@@ -10,6 +10,7 @@
 
     {% block content %}
     <ul class="notifications">
+        {% if current_user_notifications.count != 0 %}
         {% for notice in current_user_notifications %}
         <div class="alert alert-block alert-{{ notice.level }}">
 
@@ -29,11 +30,17 @@
         </div>
 
         {% endfor %}
+       
+      
+        
     </ul>
     <form method = "POST">
         {% csrf_token %}
         <input class="btn btn-primary" type="submit" value="Прочесть все">
     <form>
+        {% else %}
+        Уведомлений нет
+        {% endif %}
     {% endblock content %}
 
 </body>

@@ -21,7 +21,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Имя сотрудника</th>
                     <th scope="col">Фамилия</th>
                     <th scope="col">Отчество</th>
@@ -32,7 +31,6 @@
             <tbody>
                 {% for k, v in time_for_employees.items %}
                 <tr>
-                    <th scope="row">{{k.id}}</th>
                     <td>{{k.employee_surname}}</td>
                     <td>{{k.employee_name}}</td>
                     <td>{{k.employee_patronymic}}</td>

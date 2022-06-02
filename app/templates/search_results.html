@@ -18,7 +18,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Название</th>
                 <th scope="col">Менеджер проекта</th>
                 <th scope="col">Содержимое</th>
@@ -33,7 +32,6 @@
         <tbody>
             {% for pr in query %}
             <tr>
-                <th scope="row">{{pr.id}}</th>
                 <td><a href="{% url 'get_tasks_for_employee' pr.id %}">{{pr.project_name}}</a></td>
                 <td>{{pr.manager_key}}</td>
                 <td>{{pr.project_description}}</td>
@@ -62,7 +60,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Какому проекту принадлежит задача</th>
                 <th scope="col">Название задачи</th>
                 <th scope="col">Содержмое задачи</th>
@@ -78,7 +75,6 @@
         <tbody>
             {% for task in query_task %}
             <tr>
-                <th scope="row">{{task.id}}</th>
                 <td>{{task.task_key}}</td>
                 <td>{{task.task_name}}</td>
                 <td>{{task.task_description}}</td>

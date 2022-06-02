@@ -16,7 +16,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Какому проекту принадлежит задача</th>
                     <th scope="col">Название задачи</th>
                     <th scope="col">Содержмое задачи</th>
@@ -33,7 +32,6 @@
                 {% for task in tasks %}
                     
                 <tr>
-                    <th scope="row">{{task.id}}</th>
                     
                     <td>{{task.task_key}}</td>
                     <td>{{task.task_name}}</td>
