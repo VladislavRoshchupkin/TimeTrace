@@ -16,7 +16,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Какому проекту принадлежит задача</th>
                     <th scope="col">Название задачи</th>
                     <th scope="col">Содержмое задачи</th>
                     <th scope="col">Предполагаемое начало выполнения</th>
@@ -30,10 +29,7 @@
             </thead>
             <tbody>
                 {% for task in tasks %}
-                    
                 <tr>
-                    
-                    <td>{{task.task_key}}</td>
                     <td>{{task.task_name}}</td>
                     <td>{{task.task_description}}</td>
                     <td>{{task.start_date_task}}</td>
