@@ -477,8 +477,16 @@ def change_time_work(request, id):
             # employee.save()
             task.status_task = form.cleaned_data['status_task']
             task.save()
-            notify.send(sender=request.user, recipient=user_instance, verb=   
-            f"Задача {task.task_name} у пользователя {request.user} изменила статус на '{task.status_task}'")
+            if request.user.is_staff and not request.user.is_superuser:
+                superuser = User.objects.filter(is_superuser=True)
+                notify.send(sender=request.user, recipient=superuser, verb=   
+                f"Задача {task.task_name} у менеджера {request.user} изменила статус на '{task.status_task}'")
+            if not request.user.is_staff:
+                notify.send(sender=request.user, recipient=user_instance, verb=   
+                f"Задача {task.task_name} у пользователя {request.user} изменила статус на '{task.status_task}'")
+            else:
+                pass
+            
             return redirect(reverse('get_tasks_for_employee', args=[task.task_key.id]))
     else:
         form = ChangeTimeForms(instance=task)

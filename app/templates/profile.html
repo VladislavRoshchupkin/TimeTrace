@@ -78,13 +78,24 @@
             </tbody>
         </table>
 
-       
+
         {% if request.user.is_superuser or request.user.is_staff %}
-        <h3>Отделы:</h3>
         <div class="container">
-            {% for d in all_departments %}
-                <a href="{% url 'show_employee_for_dep' d.id %}">{{d.department_name}}</a>
-            {% endfor %}
+            <h3>Отделы:</h3>
+
+            <p>
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
+                    aria-controls="collapseExample">
+                    Показать отделы
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    {% for d in all_departments %}
+                        <a href="{% url 'show_employee_for_dep' d.id %}">{{d.department_name}}</a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         {% else %}
         <h3>Сотрудники:</h3>

@@ -11,11 +11,13 @@
 
     {% block content %}
     <div class="container">
-
-        Отдел - {{department}},
-        Общее количество часов - {{raiting_all.total_count}}
         <br>
-        Сотрудники моего отдела:
+        <p class="font-weight-lighter" style="font-size: 1.2rem;">Общее количество часов:
+            <u>{{raiting_all.total_count}}</u></p>
+
+        <p class="font-weight-lighter" style="margin-top:-10px; margin-bottom:-20px ; font-size: 1.2rem;">Сотрудники
+            отдела {{department}}</p>
+        <br>
         <table class="table">
             <thead>
                 <tr>

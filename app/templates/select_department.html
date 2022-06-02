@@ -13,9 +13,19 @@
     <div class="container">
         {% csrf_token %}
         <h2>Отделы:</h2>
-        {% for d in departments %}
-            <a href="{% url 'raiting_page' d.id %}">{{d.department_name}}</a>
-        {% endfor %}
+        <p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
+                aria-controls="collapseExample">
+                Показать отделы
+            </a>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                {% for d in departments %}
+                <a href="{% url 'raiting_page' d.id %}">{{d.department_name}}</a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     {% endblock content %}
 
