@@ -8,23 +8,28 @@
 
 <body>
 
-    {% block content %}
-    <div class="container">
-        <img src="{{profile_page.photo.url}}" height="100" width="100">
-        <li>Отдел - {{profile_page.department_key}}</li>
-        <li>Должность - {{profile_page.position_key}}</li>
-        <li>Фамилия - {{profile_page.employee_surname}}</li>
-        <li>Имя - {{profile_page.employee_name}}</li>
-        <li>Отчество - {{profile_page.employee_patronymic}}</li>
-        <li>Email - {{profile_page.user_key.email}}</li>
-        <li>Количество выходных - {{profile_page.weekend_count}}</li>
+  
 
-
-        <br>
+        {% block content %}
+        <div class="container-fluid">
+            <div class="col-sm-3">
+            <img src="{{profile_page.photo.url}}" class="rounded float-left"  height="300" width="300" style="padding-top: 17px;">
+            </div>
+            <ul class="list-group w-25 p-3">
+            <li class="list-group-item" style="background-color: gainsboro;border-bottom: 2px solid maroon; ">Фамилия - {{profile_page.employee_surname}}</li>
+            <li class="list-group-item" style="background-color: gainsboro;border-bottom: 2px solid maroon; ">Имя - {{profile_page.employee_name}}</li>
+            <li class="list-group-item" style="background-color: gainsboro;border-bottom: 2px solid maroon; ">Отчество - {{profile_page.employee_patronymic}}</li>
+            <li class="list-group-item" style="background-color: gainsboro; border-bottom: 2px solid maroon;">Отдел - {{profile_page.department_key}}</li>
+            <li class="list-group-item" style="background-color: gainsboro; border-bottom: 2px solid maroon;">Должность - {{profile_page.position_key}}</li>
+            <li class="list-group-item" style="background-color: gainsboro; border-bottom: 2px solid maroon;">Email - {{profile_page.user_key.email}}</li>
+            <li class="list-group-item" style="background-color: gainsboro;">Количество выходных - {{profile_page.weekend_count}}</li>
         {% if request.user.is_superuser or request.user.id == profile_page.user_key.id %}
-            <a href="{% url 'edit_user' profile_page.id %}">редактировать</a>
-        {% endif %}
-        {% endblock content %}
+                <a href="{% url 'edit_user' profile_page.id %}" class="btn btn-info" role="button" style= "text-align: left" >Редактировать</a>
+            {% endif %}
+        </ul>
+        </div>
+    
+            {% endblock content %}
 
 </body>
 
