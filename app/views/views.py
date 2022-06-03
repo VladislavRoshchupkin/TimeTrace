@@ -67,7 +67,7 @@ def get_tasks_for_employee(request, id_project):
         d[k] = v
     if request.user.is_superuser:
         c = {
-        'tasks' : Task.objects.all(),
+        'tasks' : Task.objects.filter(task_key=project),
         'project_name' : project.project_name,
         'times' : d
     }
