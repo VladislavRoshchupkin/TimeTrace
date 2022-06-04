@@ -11,15 +11,15 @@
     {% block content %}
     <div class="container">
         <h3>Название проекта - {{project_name}}</h3>
-        Задачи сотрудника:
+        <h4>Задачи сотрудника:</h4>
 
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Название задачи</th>
                     <th scope="col">Содержмое задачи</th>
-                    <th scope="col">Предполагаемое начало выполнения</th>
-                    <th scope="col">Предполагаемый конец выполнения</th>
+                    <th scope="col">Старт задачи</th>
+                    <th scope="col">Конец задачи</th>
                     {% if request.user.is_superuser or request.user.is_staff %}
                     <th scope="col">Статус</th>
                     {% endif %}
