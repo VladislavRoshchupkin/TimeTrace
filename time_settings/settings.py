@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)tsb+a#jn@x!^dsm0jh&9qq1b)6=hifkb_c-b$^!(g43cmn88t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -171,3 +171,12 @@ SWAGGER_SETTINGS = {
     'LOGOUT_URL' : '/logout/'
 }
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static/'
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
+# STATICFILES_DIRS = [
+# os.path.join(BASE_DIR, "static"),
+# ]
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
