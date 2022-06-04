@@ -19,7 +19,7 @@
                 <tr>
                     <th scope="col">Название</th>
                     <th scope="col">Менеджер проекта</th>
-                    <th scope="col">Содержимое</th>
+                    <th scope="col" class="text-center">Содержимое</th>
                     <th scope="col">Предполагаемое начало выполнения</th>
                     <th scope="col">Предполагаемый конец выполнения</th>
                     {% if request.user.is_superuser or request.user.is_staff %}
@@ -33,7 +33,7 @@
                 <tr>
                     <td><a href="{% url 'get_tasks_for_employee' pr.id %}">{{pr.project_name}}</a></td>
                     <td>{{pr.manager_key}}</td>
-                    <td>{{pr.project_description}}</td>
+                    <td style="width: 400px;word-wrap: break-word;word-break: break-all;" class="text-center">{{pr.project_description}}</td>
                     <td>{{pr.start_date}}</td>
                     <td>{{pr.end_date}}</td>
                     {% if request.user.is_superuser %}
