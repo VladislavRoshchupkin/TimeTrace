@@ -215,7 +215,7 @@ def raiting(request):
             times_in_employee.append(time_current)
             rai = Raiting.objects.get(raiting_key=current_department)
             rai.total_count = sum(times_in_employee)
-        rai.save()
+            rai.save()
         d[e] = time_current
     d = dict(sorted(d.items(), key=lambda x: x[1], reverse= True))
 
@@ -571,7 +571,7 @@ def raiting_page(request, id):
             times_in_employee.append(time_current)
             rai = Raiting.objects.get(raiting_key=department)
             rai.total_count = sum(times_in_employee)
-        rai.save()
+            rai.save()
         d[e] = time_current
     d = dict(sorted(d.items(), key=lambda x: x[1], reverse= True))
 
