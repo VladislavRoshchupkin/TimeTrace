@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib import auth
@@ -54,3 +54,12 @@ def add_employee(request):
         'form' : form
     }
     return render(request, 'admin/added_employee.html', c)
+
+
+@permission_required('is_superuser')
+def delete_employee(request, id):
+    employee = Employee.objects.get(id=id)
+    user = User.objects.get(id=employee.user_key.id)
+    employee.delete()
+    user.delete()
+    return redirect(reverse('profile'))

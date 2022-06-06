@@ -49,7 +49,9 @@ urlpatterns = [
 
     path('profile_page/<int:id>', profile_page, name='profile_page'),
 
-    path('search/', search_querys, name='search_url')
+    path('search/', search_querys, name='search_url'),
+
+    path('detele_employee/<int:id>', employees.delete_employee, name='delete_employee'),
 
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
