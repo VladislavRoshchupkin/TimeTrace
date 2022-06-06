@@ -34,6 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'time_settings.urls'
@@ -161,3 +162,4 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # ]
 import dj_database_url
 DATABASES['default'] = dj_database_url.config()
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
