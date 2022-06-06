@@ -23,8 +23,12 @@
             <li class="list-group-item" style="background-color: gainsboro; border-bottom: 2px solid maroon;">Должность - {{profile_page.position_key}}</li>
             <li class="list-group-item" style="background-color: gainsboro; border-bottom: 2px solid maroon;">Email - {{profile_page.user_key.email}}</li>
             <li class="list-group-item" style="background-color: gainsboro;">Количество выходных - {{profile_page.weekend_count}}</li>
-        {% if request.user.is_superuser or request.user.id == profile_page.user_key.id %}
+            {% if request.user.is_superuser or request.user.id == profile_page.user_key.id %}
                 <a href="{% url 'edit_user' profile_page.id %}" class="btn btn-info" role="button" style= "text-align: left" >Редактировать</a>
+            {% endif %}
+            {%  if request.user.is_superuser and request.user.id != profile_page.user_key.id %}
+            <a href="{% url 'delete_employee' profile_page.user_key.id %}" class="btn btn-danger " role="button" style= "text-align: left" >Удалить</a>
+
             {% endif %}
         </ul>
         </div>
