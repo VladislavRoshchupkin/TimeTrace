@@ -154,7 +154,7 @@ def time_tracking(request, id):
     for event in events:
         event_list.append(
             {
-                "title": f'{event.task_key.task_name} - {event.time_work}ч',
+                "title": f'{event.task_key.task_name} - {event.description}  - {event.time_work}ч',
                 "start": event.date_work.strftime("%Y-%m-%d"),
                 "end": event.date_work.strftime("%Y-%m-%d")
             }
