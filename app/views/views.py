@@ -1,5 +1,3 @@
-from time import time
-from unittest import result
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -25,7 +23,7 @@ from django.urls import reverse_lazy, reverse
 from django.conf import settings
 from notifications.signals import notify
 from django.db.models import Sum
-
+from collections import Counter
 from ..models import *
 from ..utils import Calendar
 from ..forms import TimeAddForms
@@ -90,19 +88,16 @@ def profile(request):
   
     all_time = Time.objects.filter(time_key=employee)
     my_all_time = 0.0
-
-    # for at in all_time:
-    #     my_all_time += int(at.time_work)
-    # print(my_all_time)
-    # if my_all_time != Raiting.objects.get(raiting_key=dep).total_count:
-    #     print("выполняю")
-    #     rai = Raiting.objects.get(raiting_key=dep)
-    #     rai.total_count = my_all_time
-    #     rai.save()
-
-    # request.user.notifications.mark_all_as_read()
     
     if request.user.is_superuser:
+        dep_array = []
+        for e in Employee.objects.all():
+            dep_array.append(e.department_key.department_name)
+        counts_of_employee = Counter(dep_array).most_common()
+        for (k, v) in enumerate(counts_of_employee):
+            department = Department.objects.get(department_name=v[0])
+            department.count_employee=v[1]
+            department.save()
         c = {
             'employee' : Employee.objects.all().exclude(user_key=True),
             'profile_info' : Employee.objects.get(user_key=request.user),
@@ -571,7 +566,7 @@ def raiting_page(request, id):
             times_in_employee.append(time_current)
             rai = Raiting.objects.get(raiting_key=department)
             rai.total_count = sum(times_in_employee)
-            rai.save()
+            # rai.save()
         d[e] = time_current
     d = dict(sorted(d.items(), key=lambda x: x[1], reverse= True))
 
