@@ -5,18 +5,14 @@ from rest_framework.permissions import IsAuthenticated
 from ..serializers import *
 from django.contrib.auth.models import User
 from ..models import *
+from collections import Counter
 
 class ProjectList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ProjectSerializer
 
     def get(self, request):
-        if request.user.is_superuser or request.user.is_staff:
-            employee = Employee.objects.all()
-            projects = Project.objects.filter(project_user_key__in=employee)
-        else:
-            employee = Employee.objects.get(user_key=request.user)
-            projects = Project.objects.filter(project_user_key=employee)
+        projects = Project.objects.all()
         queryset = ProjectSerializer(projects, many=True)
         context = {
             'projects' : queryset.data
@@ -58,6 +54,15 @@ class DepartmentList(generics.ListAPIView):
 
     def get(self, request):
         department = Department.objects.all()
+
+        dep_array = []
+        for e in Employee.objects.all():
+            dep_array.append(e.department_key.department_name)
+        counts_of_employee = Counter(dep_array).most_common()
+        for (k, v) in enumerate(counts_of_employee):
+            department_current = Department.objects.get(department_name=v[0])
+            department_current.count_employee=v[1]
+            department_current.save()
         queryset = DepartmentSerializer(department, many=True)
         context = {
             'department' : queryset.data
