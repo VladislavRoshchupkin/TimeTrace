@@ -82,9 +82,11 @@
                 <td>{{task.task_description}}</td>
                 <td>{{task.start_date_task}}</td>
                 <td>{{task.end_date_task}}</td>
-                <td><a href="{% url 'change_time_work' task.id %}" class="btn-sm btn-primary w-75 " role="button"
-                        style="text-align: left">Изменить статус</a> | <br></td>
+                <td>
+                    <div class="btn-toolbar"><a href="{% url 'change_time_work' task.id %}" class="btn-sm btn-primary w-75 " role="button"
+                    style="text-align: left; padding-right:20px;">Изменить статус</a></td>
                 {% if request.user.is_superuser or request.user.is_staff %}
+            </div>
                 <td>
                     <a href="{% url 'edit_task' task.id %}">Изменить задачу</a> |
                     <a href="{% url 'delete_task' task.id %}">Удалить</a>

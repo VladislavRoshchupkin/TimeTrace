@@ -18,12 +18,6 @@ class Department(models.Model):
 
 
 class Position(models.Model):
-    """ Класс Должности """
-    # POSITIONS = [
-    #     ('Менеджер', 'Менеджер'),
-    #     ('Сотрудник', 'Сотрудник'),
-    #     ('Админ', 'Админ'),
-    # ]
 
     position_name = models.CharField(max_length=30, verbose_name='Название должности')
 
